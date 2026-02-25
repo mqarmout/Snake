@@ -9,9 +9,9 @@ var placed_objects = []
 var stages = []
 var tile_types = {
 	0: Vector2(1,0),
-	1: Vector2(7,0),
+	1: Vector2(4,0),
 	2: Vector2(7,4),
-	3: Vector2(6,2),
+	3: Vector2(1,0),
 	4: Vector2(1,0),
 	5: Vector2(6,0),
 	6: Vector2(5,8),
