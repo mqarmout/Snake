@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://dbjbto58jej5b"]
+
+[ext_resource type="Texture2D" uid="uid://0hy725j3duri" path="res://icon.svg" id="1_c4vl1"]
+[ext_resource type="Script" uid="uid://g4c4jv616tc5" path="res://scripts/Exit.gd" id="1_c8tsr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_c8tsr"]
+radius = 61.522354
+
+[node name="Exit" type="Area2D" unique_id=205045601]
+scale = Vector2(0.062, 0.062)
+script = ExtResource("1_c8tsr")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=706522412]
+modulate = Color(0.05490196, 0.69803923, 0.8666667, 1)
+texture = ExtResource("1_c4vl1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=3927361]
+shape = SubResource("CircleShape2D_c8tsr")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

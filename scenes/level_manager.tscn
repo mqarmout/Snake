@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://d256ah3mrxrrf"]
+
+[ext_resource type="TileSet" uid="uid://w46us6dm7hc4" path="res://assets/new_tile_set.tres" id="1_5eglo"]
+[ext_resource type="Script" uid="uid://ywm8bcgfckvl" path="res://scripts/LevelManager.gd" id="1_06fa7"]
+
+[node name="LevelManager" type="TileMapLayer" unique_id=134659451]
+tile_set = ExtResource("1_5eglo")
+script = ExtResource("1_06fa7")
+
+[connection signal="ready" from="." to="." method="_on_ready"]

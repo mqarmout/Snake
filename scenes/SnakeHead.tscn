@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cxo5b7cpifdk"]
+
+[ext_resource type="Texture2D" uid="uid://0hy725j3duri" path="res://icon.svg" id="1_svirp"]
+[ext_resource type="Script" uid="uid://be7ceoxssjala" path="res://scripts/SnakeHead.gd" id="2_w0r2f"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w0r2f"]
+radius = 60.033325
+
+[node name="SnakeHead" type="CharacterBody2D" unique_id=429239485]
+scale = Vector2(0.05, 0.05)
+script = ExtResource("2_w0r2f")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1694517222]
+modulate = Color(0.28235295, 0.5411765, 0.28235295, 1)
+texture = ExtResource("1_svirp")
+
+[node name="body_collisionShape" type="CollisionShape2D" parent="." unique_id=251377361]
+shape = SubResource("CircleShape2D_w0r2f")
+
+[connection signal="ready" from="." to="." method="_on_ready"]
