@@ -13,3 +13,6 @@ func win() -> void:
 func load_next_level() -> void:
 	current_level += 1
 	level_manager.draw_level(current_stage, current_level)
+
+func food_consumed(_object: Area2D):
+	level_manager.free_object(_object)

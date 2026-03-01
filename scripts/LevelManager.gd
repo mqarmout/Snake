@@ -32,6 +32,15 @@ func setup_objects_dictionary() -> void:
 		4: Food_Scene
 	}
 
+func free_object(_object:Area2D):
+	var index:int = 0
+	for placed_object in placed_objects:
+		if placed_object == _object:
+			placed_objects.pop_at(index)
+			_object.queue_free()
+			return
+		index += 1
+
 func add_object(attachement_position:Vector2, object_scene:PackedScene) -> void:
 	var object_node:Area2D = object_scene.instantiate()
 	object_node.position = attachement_position * object_displacement_multiplier + object_displacement
@@ -39,9 +48,10 @@ func add_object(attachement_position:Vector2, object_scene:PackedScene) -> void:
 	add_sibling.call_deferred(object_node)
 
 func draw_level(stage:int, level:int) -> void:
+	print(placed_objects)
 	for placed_object in placed_objects:
 		placed_object.queue_free()
-		placed_objects.pop_front()
+	placed_objects.clear()
 	clear()
 	var index = 0
 	for row in stages[stage - 1][level - 1]:

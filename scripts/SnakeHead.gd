@@ -5,6 +5,7 @@ extends CharacterBody2D
 var speed = 15
 var body_size:float = 6.5
 var stationary:bool = true
+var first_move:bool = true
 
 var body_directions:Array[Vector2] = [Vector2.UP]
 var body_parts:Array[CharacterBody2D] = []
@@ -16,11 +17,13 @@ var last_input:Vector2 = Vector2.ZERO
 
 func getInput():
 	var new_input = Input.get_vector("left", "right", "up", "down")
+	if new_input != Vector2.ZERO:
+		stationary = false
 	if stored_direction != new_input && new_input != Vector2.ZERO:
 		stored_direction = new_input
 	if can_change_direction():
 		determine_current_direction(stored_direction)
-	if(!is_stationary()):move()
+	if !stationary:move()
 
 func determine_current_direction(new_input:Vector2) -> void:
 	new_input = new_input.normalized().round()
@@ -37,21 +40,18 @@ func determine_current_direction(new_input:Vector2) -> void:
 
 func can_change_direction() -> bool:
 	var distance:Vector2 = self.position - last_position
-	if stationary && stored_direction != Vector2.ZERO:
-		update_queue.call_deferred()
-		return true
-	if stored_direction == current_direction * -1 || stored_direction == body_directions.front() * -1:
-		return false
-	if distance.length() >= body_size:
-		last_position = self.position
-		update_queue.call_deferred()
-		return true
+	if !stationary && stored_direction != Vector2.ZERO:
+		if stored_direction != current_direction * -1:
+			if first_move:
+				last_position = self.position
+				update_queue.call_deferred()
+				first_move = false
+				return true
+			if distance.length() >= body_size:
+				last_position = self.position
+				update_queue.call_deferred()
+				return true
 	return false
-
-func is_stationary() -> bool:
-	if current_direction != Vector2.ZERO:
-		stationary = false
-	return stationary
 
 func move() -> void:
 	velocity = current_direction * speed
@@ -95,16 +95,18 @@ func reset_location(location:Vector2, direction:Vector2):
 	position = location + Vector2(body_size/2,body_size/2)
 	for body in body_parts:
 		body.queue_free()
-		body_parts.pop_front()
+	body_parts.clear()
 	instantiate_body()
 
 func stop_moving() -> void:
+	first_move = true
 	stationary = true
 	current_direction = Vector2.ZERO
 	last_input = Vector2.ZERO
 	stored_direction = Vector2.ZERO
 	velocity = Vector2.ZERO
-	body_directions = [Vector2.ZERO]
+	for body in body_directions:
+		body = Vector2.ZERO
 	update_children()
 
 func _on_ready() -> void:
