@@ -7,13 +7,12 @@ var body_size:float = 6.5
 var stationary:bool = true
 var first_move:bool = true
 
-var body_directions:Array[Vector2] = [Vector2.UP]
+var body_directions:Array[Vector2] = []
 var body_parts:Array[CharacterBody2D] = []
 
 var last_position:Vector2
 var stored_direction:Vector2 = Vector2.ZERO
 var current_direction:Vector2 = Vector2.ZERO
-var last_input:Vector2 = Vector2.ZERO
 
 func getInput():
 	var new_input = Input.get_vector("left", "right", "up", "down")
@@ -29,14 +28,8 @@ func determine_current_direction(new_input:Vector2) -> void:
 	new_input = new_input.normalized().round()
 	if new_input.abs() != Vector2.ONE && new_input != Vector2.ZERO:
 		current_direction = new_input
-		last_input = new_input
-	elif last_input == Vector2.ZERO:
+	elif current_direction == Vector2.ZERO:
 		current_direction = Vector2(new_input.x, 0)
-		last_input = new_input
-	elif new_input == Vector2.ZERO:
-		current_direction = last_input
-	elif last_input.dot(new_input) != 0:
-		current_direction = (new_input.abs() - last_input.abs()) * new_input
 
 func can_change_direction() -> bool:
 	var distance:Vector2 = self.position - last_position
@@ -87,11 +80,12 @@ func attach_new_body(attachement_position:Vector2, direction:Vector2) -> void:
 
 func food_consumed() -> void:
 	# rewrite to detect the object interacted with and act accordingly instead of waiting for a signal from the object
+	var last_body_position: Vector2 = self.position if body_parts.size() == 0 else body_parts.back().position
 	body_directions.append(Vector2.ZERO)
-	attach_new_body(body_parts.back().position, Vector2.ZERO)
+	attach_new_body(last_body_position, Vector2.ZERO)
 
 func reset_location(location:Vector2, direction:Vector2):
-	body_directions = [direction]
+	body_directions = []
 	position = location + Vector2(body_size/2,body_size/2)
 	for body in body_parts:
 		body.queue_free()
@@ -102,12 +96,8 @@ func stop_moving() -> void:
 	first_move = true
 	stationary = true
 	current_direction = Vector2.ZERO
-	last_input = Vector2.ZERO
 	stored_direction = Vector2.ZERO
 	velocity = Vector2.ZERO
-	for body in body_directions:
-		body = Vector2.ZERO
-	update_children()
 
 func _on_ready() -> void:
 	instantiate_body()

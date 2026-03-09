@@ -48,7 +48,6 @@ func add_object(attachement_position:Vector2, object_scene:PackedScene) -> void:
 	add_sibling.call_deferred(object_node)
 
 func draw_level(stage:int, level:int) -> void:
-	print(placed_objects)
 	for placed_object in placed_objects:
 		placed_object.queue_free()
 	placed_objects.clear()
@@ -67,16 +66,39 @@ func draw_level(stage:int, level:int) -> void:
 func load_levels_file_content() -> void:
 	var file = FileAccess.open("res://scripts/levels.txt", FileAccess.READ)
 	var content = file.get_as_text()
-	for stage in content.split("s"):
-		var file_levels = []
-		for level in stage.split("l"):
-			var rows = []
-			for row in level.split("\n"):
-				if row != "":
-					var cells = []
-					for cell in row.split(","):
-						cells.append(int(cell))
-					rows.append(cells)
-			if rows.size() > 0:
-				file_levels.append(rows)
-		stages.append(file_levels)
+	var found_stages:Array = content.split("s")
+	found_stages.pop_back()
+	
+	for found_stage in found_stages:
+		var levels:Array
+		var lines:Array = found_stage.split("\n")
+		var counter:int = 0
+		while counter < lines.size() - 1:
+			var level_dimensions:Vector2 = Vector2(int(lines[counter].split(",")[0]), int(lines[counter].split(",")[1]))
+			
+			var objects:Array = lines[counter + 1].split(",")
+			for _object in objects:
+				objects.append(int(_object))
+				objects.pop_front()
+			
+			var objects_locations:Array
+			var split_objects_locations:Array = lines[counter + 2].split(",")
+			var objects_counter:int = 0
+			while objects_counter < split_objects_locations.size() - 1:
+				objects_locations.append(Vector2(int(split_objects_locations[objects_counter]), int(split_objects_locations[objects_counter + 1])))
+				objects_counter += 2
+			
+			var new_level:Array
+			for col in level_dimensions.y:
+				var new_line:Array
+				new_line.resize(level_dimensions.x)
+				new_line.fill(0)
+				new_level.append(new_line)
+			
+			objects_counter = 0
+			for _object in objects:
+				new_level[objects_locations[objects_counter].x][objects_locations[objects_counter].y] = _object
+			levels.append(new_level)
+			
+			counter += 3
+		stages.append(levels)
