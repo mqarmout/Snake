@@ -77,27 +77,35 @@ func load_levels_file_content() -> void:
 			var level_dimensions:Vector2 = Vector2(int(lines[counter].split(",")[0]), int(lines[counter].split(",")[1]))
 			
 			var objects:Array = lines[counter + 1].split(",")
-			for _object in objects:
-				objects.append(int(_object))
+			var objects_counter:int = 0
+			while objects_counter < objects.size():
+				objects.append(int(objects[0]))
 				objects.pop_front()
+				objects_counter += 1
 			
 			var objects_locations:Array
 			var split_objects_locations:Array = lines[counter + 2].split(",")
-			var objects_counter:int = 0
-			while objects_counter < split_objects_locations.size() - 1:
+			objects_counter =  0
+			while objects_counter < split_objects_locations.size():
 				objects_locations.append(Vector2(int(split_objects_locations[objects_counter]), int(split_objects_locations[objects_counter + 1])))
 				objects_counter += 2
 			
 			var new_level:Array
 			for col in level_dimensions.y:
 				var new_line:Array
-				new_line.resize(level_dimensions.x)
-				new_line.fill(0)
+				new_line.resize(int(level_dimensions.x))
+				if col == 0 || col == level_dimensions.y - 1:
+					new_line.fill(1)
+				else:
+					new_line.fill(0)
+					new_line[0] = 1
+					new_line[level_dimensions.x - 1] = 1
 				new_level.append(new_line)
 			
 			objects_counter = 0
 			for _object in objects:
 				new_level[objects_locations[objects_counter].x][objects_locations[objects_counter].y] = _object
+				objects_counter += 1
 			levels.append(new_level)
 			
 			counter += 3

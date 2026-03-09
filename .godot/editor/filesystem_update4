@@ -1,4 +1,3 @@
 res://scenes/level_manager.tscn
 res://assets/new_tile_set.tres
 res://scripts/LevelManager.gd
-res://scripts/levels.txt
