@@ -4,50 +4,42 @@ extends CharacterBody2D
 
 var speed = 15
 var body_size:float = 6.5
-var stationary:bool = true
-var first_move:bool = true
 
 var body_directions:Array[Vector2] = []
 var body_parts:Array[CharacterBody2D] = []
 
-var last_position:Vector2
-var stored_direction:Vector2 = Vector2.ZERO
 var current_direction:Vector2 = Vector2.ZERO
 
-func getInput():
+func getInput(_delta:float):
 	var new_input = Input.get_vector("left", "right", "up", "down")
-	if new_input != Vector2.ZERO:
-		stationary = false
-	if stored_direction != new_input && new_input != Vector2.ZERO:
-		stored_direction = new_input
-	if can_change_direction():
-		determine_current_direction(stored_direction)
-	if !stationary:move()
+	if new_input == Vector2.ZERO:
+		return
+	var direction:Vector2 = determine_direction(new_input)
+	position = position.move_toward(direction * body_size, _delta * speed)
 
-func determine_current_direction(new_input:Vector2) -> void:
+func determine_direction(new_input:Vector2) -> Vector2:
+	var current_direction = Vector2(cos(rotation), sin(rotation))
+	if new_input.abs() == Vector2.ONE:
+		return (current_direction.abs() - new_input.abs()) * new_input
+	if new_input == current_direction * -1:
+		return Vector2.ZERO
+	return new_input
+
+func can_move(new_input:Vector2) -> bool:
 	new_input = new_input.normalized().round()
 	if new_input.abs() != Vector2.ONE && new_input != Vector2.ZERO:
 		current_direction = new_input
-	elif current_direction == Vector2.ZERO:
-		current_direction = Vector2(new_input.x, 0)
-
-func can_change_direction() -> bool:
-	var distance:Vector2 = self.position - last_position
-	if !stationary && stored_direction != Vector2.ZERO:
-		if stored_direction != current_direction * -1:
-			if first_move:
-				last_position = self.position
-				update_queue.call_deferred()
-				first_move = false
-				return true
-			if distance.length() >= body_size:
-				last_position = self.position
-				update_queue.call_deferred()
-				return true
+		return true
 	return false
 
-func move() -> void:
-	velocity = current_direction * speed
+func instantiate_body() -> void:
+	var index:int = 0
+	for body_direction in body_directions:
+		var initial_position:Vector2 = self.position
+		if body_parts.size() > 0:
+			initial_position = body_parts.get(index).position
+		attach_new_body(initial_position, body_direction)
+		index += 1
 
 func update_queue() -> void:
 	update_children()
@@ -60,16 +52,6 @@ func update_children() -> void:
 	var index:int = 0
 	for body in body_parts:
 		body.movement_direction = body_directions.get(index)
-		index += 1
-
-func instantiate_body() -> void:
-	last_position = self.position
-	var index:int = 0
-	for body_direction in body_directions:
-		var initial_position:Vector2 = self.position
-		if body_parts.size() > 0:
-			initial_position = body_parts.get(index).position
-		attach_new_body(initial_position, body_direction)
 		index += 1
 
 func attach_new_body(attachement_position:Vector2, direction:Vector2) -> void:
@@ -92,16 +74,9 @@ func reset_location(location:Vector2, direction:Vector2):
 	body_parts.clear()
 	instantiate_body()
 
-func stop_moving() -> void:
-	first_move = true
-	stationary = true
-	current_direction = Vector2.ZERO
-	stored_direction = Vector2.ZERO
-	velocity = Vector2.ZERO
-
 func _on_ready() -> void:
 	instantiate_body()
 
 func _physics_process(_delta):
-	getInput()
+	getInput(_delta)
 	move_and_slide()

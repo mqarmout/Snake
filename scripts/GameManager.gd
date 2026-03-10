@@ -7,7 +7,6 @@ var current_level:int = 1
 var current_stage:int = 1
 
 func win() -> void:
-	snake_head.stop_moving()
 	snake_head.reset_location(Vector2.ZERO, Vector2.RIGHT)
 
 func load_next_level() -> void:
