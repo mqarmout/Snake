@@ -12,6 +12,7 @@ script = ExtResource("2_w0r2f")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1694517222]
 modulate = Color(0.28235295, 0.5411765, 0.28235295, 1)
+rotation = 1.5707964
 texture = ExtResource("1_svirp")
 
 [node name="body_collisionShape" type="CollisionShape2D" parent="." unique_id=251377361]

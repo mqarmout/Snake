@@ -4,6 +4,7 @@ extends CharacterBody2D
 
 var speed = 15
 var body_size:float = 6.5
+var can_move:bool = true
 
 var body_directions:Array[Vector2] = []
 var body_parts:Array[CharacterBody2D] = []
@@ -11,10 +12,18 @@ var body_parts:Array[CharacterBody2D] = []
 var current_direction:Vector2 = Vector2.ZERO
 
 func getInput(_delta:float):
-	var new_input = Input.get_vector("left", "right", "up", "down")
-	if new_input == Vector2.ZERO:
+	var new_input = Input.get_vector("left", "right", "up", "down").round()
+	if new_input == Vector2.ZERO || !can_move:
 		return
 	var direction:Vector2 = determine_direction(new_input)
+	rotation = direction.angle()
+	move(direction, _delta)
+
+func move(direction:Vector2, _delta:float) -> void:
+	#record current positoin
+	#calculate the position to move to
+	#disable taking input
+	#move
 	position = position.move_toward(direction * body_size, _delta * speed)
 
 func determine_direction(new_input:Vector2) -> Vector2:
