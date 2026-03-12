@@ -4,7 +4,8 @@ extends CharacterBody2D
 
 var speed = 15
 var body_size:float = 6.5
-var can_move:bool = true
+var can_make_move:bool = true
+var target:Vector2
 
 var body_directions:Array[Vector2] = []
 var body_parts:Array[CharacterBody2D] = []
@@ -13,33 +14,28 @@ var current_direction:Vector2 = Vector2.ZERO
 
 func getInput(_delta:float):
 	var new_input = Input.get_vector("left", "right", "up", "down").round()
-	if new_input == Vector2.ZERO || !can_move:
-		return
 	var direction:Vector2 = determine_direction(new_input)
-	rotation = direction.angle()
 	move(direction, _delta)
 
 func move(direction:Vector2, _delta:float) -> void:
-	#record current positoin
-	#calculate the position to move to
-	#disable taking input
-	#move
-	position = position.move_toward(direction * body_size, _delta * speed)
+	if target == position && can_make_move:
+		if direction != Vector2.ZERO:
+			rotation = direction.angle()
+		target = position + direction * body_size
+		can_make_move = false
+	elif target == position && !can_make_move:
+		can_make_move = true
+	if !can_make_move:
+		position = position.move_toward(target, _delta * speed)
 
 func determine_direction(new_input:Vector2) -> Vector2:
-	var current_direction = Vector2(cos(rotation), sin(rotation))
-	if new_input.abs() == Vector2.ONE:
-		return (current_direction.abs() - new_input.abs()) * new_input
+	current_direction = Vector2(cos(rotation), sin(rotation))
 	if new_input == current_direction * -1:
 		return Vector2.ZERO
+	if new_input.abs() == Vector2.ONE:
+		print((current_direction.abs() - new_input.abs()) * new_input)
+		return (current_direction.abs() - new_input.abs()) * new_input
 	return new_input
-
-func can_move(new_input:Vector2) -> bool:
-	new_input = new_input.normalized().round()
-	if new_input.abs() != Vector2.ONE && new_input != Vector2.ZERO:
-		current_direction = new_input
-		return true
-	return false
 
 func instantiate_body() -> void:
 	var index:int = 0
@@ -78,12 +74,14 @@ func food_consumed() -> void:
 func reset_location(location:Vector2, direction:Vector2):
 	body_directions = []
 	position = location + Vector2(body_size/2,body_size/2)
+	target = position
 	for body in body_parts:
 		body.queue_free()
 	body_parts.clear()
 	instantiate_body()
 
 func _on_ready() -> void:
+	target = position
 	instantiate_body()
 
 func _physics_process(_delta):
