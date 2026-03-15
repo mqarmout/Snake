@@ -15,4 +15,4 @@ zoom = Vector2(4, 4)
 [node name="LevelManager" parent="." unique_id=134659451 instance=ExtResource("5_vcsgt")]
 
 [node name="SnakeHead" parent="." unique_id=429239485 instance=ExtResource("1_elqb8")]
-position = Vector2(3.2, 3.2)
+position = Vector2(20, 28)

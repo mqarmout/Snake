@@ -4,9 +4,10 @@ extends TileMapLayer
 @onready var exit_scene = preload("res://scenes/Exit.tscn")
 var object_displacement:Vector2 = Vector2(4,4)
 var object_displacement_multiplier:int = 8
-var placed_objects = []
+var placed_objects:Dictionary[int,Array]
 
 var stages = []
+var level_start_coordinates = []
 var tile_types = {
 	0: Vector2(1,0),
 	1: Vector2(4,0),
@@ -25,6 +26,8 @@ func _on_ready() -> void:
 	setup_objects_dictionary()
 	load_levels_file_content()
 	draw_level(1, 1)
+	draw_level(1, 2)
+	draw_level(1, 3)
 
 func setup_objects_dictionary() -> void:
 	object_types = {
@@ -32,36 +35,43 @@ func setup_objects_dictionary() -> void:
 		4: Food_Scene
 	}
 
-func free_object(_object:Area2D):
+func free_object(_object:Area2D, level:int):
 	var index:int = 0
-	for placed_object in placed_objects:
+	for placed_object in placed_objects[level]:
 		if placed_object == _object:
-			placed_objects.pop_at(index)
+			placed_objects[level].pop_at(index)
 			_object.queue_free()
 			return
 		index += 1
 
-func add_object(attachement_position:Vector2, object_scene:PackedScene) -> void:
+func add_object(attachement_position:Vector2, object_scene:PackedScene, level:int) -> void:
 	var object_node:Area2D = object_scene.instantiate()
 	object_node.position = attachement_position * object_displacement_multiplier + object_displacement
-	placed_objects.append(object_node)
+	if !placed_objects.has(level):
+		placed_objects[level] = []
+	placed_objects[level].append(object_node)
 	add_sibling.call_deferred(object_node)
 
-func draw_level(stage:int, level:int) -> void:
-	for placed_object in placed_objects:
+func clear_level(level:int) -> void:
+	for placed_object in placed_objects[level]:
 		placed_object.queue_free()
-	placed_objects.clear()
+	placed_objects[level].clear()
 	clear()
+
+#introduce more information in the parameters, such as:
+#previous level end gate coordinate
+#and previous gate location with respect to previous level
+func draw_level(stage:int, level:int) -> void:
 	var index = 0
+	var start_coordinate = level_start_coordinates[level - 1]
 	for row in stages[stage - 1][level - 1]:
-		var level_length = stages[0][0].size()
+		var level_length = stages[stage - 1][level - 1].size()
 		for cell in row:
-			var coordinates:Vector2 = Vector2((index%level_length)-level_length/2, int(index/level_length)-level_length/2)
+			var coordinates:Vector2 = start_coordinate + Vector2(int(index%level_length), int(index/level_length))
 			set_cell(coordinates, 0, tile_types[cell])
 			if object_types.has(cell):
-				add_object(coordinates, object_types[cell])
+				add_object(coordinates, object_types[cell], level)
 			index += 1
-			
 
 func load_levels_file_content() -> void:
 	var file = FileAccess.open("res://scripts/levels.txt", FileAccess.READ)
@@ -74,9 +84,10 @@ func load_levels_file_content() -> void:
 		var lines:Array = found_stage.split("\n")
 		var counter:int = 0
 		while counter < lines.size() - 1:
-			var level_dimensions:Vector2 = Vector2(int(lines[counter].split(",")[0]), int(lines[counter].split(",")[1]))
-			
-			var objects:Array = lines[counter + 1].split(",")
+			level_start_coordinates.append(Vector2(int(lines[counter].split(",")[0]), int(lines[counter].split(",")[1])))
+			var level_dimensions:Vector2 = Vector2(int(lines[counter+1].split(",")[0]), int(lines[counter+1].split(",")[1]))
+
+			var objects:Array = lines[counter + 2].split(",")
 			var objects_counter:int = 0
 			while objects_counter < objects.size():
 				objects.append(int(objects[0]))
@@ -84,7 +95,7 @@ func load_levels_file_content() -> void:
 				objects_counter += 1
 			
 			var objects_locations:Array
-			var split_objects_locations:Array = lines[counter + 2].split(",")
+			var split_objects_locations:Array = lines[counter + 3].split(",")
 			objects_counter =  0
 			while objects_counter < split_objects_locations.size():
 				objects_locations.append(Vector2(int(split_objects_locations[objects_counter]), int(split_objects_locations[objects_counter + 1])))
@@ -108,5 +119,5 @@ func load_levels_file_content() -> void:
 				objects_counter += 1
 			levels.append(new_level)
 			
-			counter += 3
+			counter += 4
 		stages.append(levels)

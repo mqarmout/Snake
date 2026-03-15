@@ -10,8 +10,9 @@ func win() -> void:
 	snake_head.reset_location(Vector2.ZERO, Vector2.RIGHT)
 
 func load_next_level() -> void:
+	level_manager.clear_level(current_level)
 	current_level += 1
 	level_manager.draw_level(current_stage, current_level)
 
 func food_consumed(_object: Area2D):
-	level_manager.free_object(_object)
+	level_manager.free_object(_object, current_level)

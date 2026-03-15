@@ -3,7 +3,7 @@ extends CharacterBody2D
 @onready var body_scene = preload("res://scenes/SnakeBody.tscn")
 
 var speed = 15
-var body_size:float = 6.5
+var cell_size:float = 8
 var can_make_move:bool = true
 var target:Vector2
 
@@ -21,7 +21,7 @@ func move(direction:Vector2, _delta:float) -> void:
 	if target == position && can_make_move:
 		if direction != Vector2.ZERO:
 			rotation = direction.angle()
-		target = position + direction * body_size
+		target = position + direction * cell_size
 		can_make_move = false
 	elif target == position && !can_make_move:
 		can_make_move = true
@@ -61,7 +61,7 @@ func update_children() -> void:
 
 func attach_new_body(attachement_position:Vector2, direction:Vector2) -> void:
 	var body_part:CharacterBody2D = body_scene.instantiate()
-	body_part.position = attachement_position - (direction * body_size)
+	body_part.position = attachement_position - (direction * cell_size)
 	body_parts.append(body_part)
 	add_sibling.call_deferred(body_part)
 
@@ -73,7 +73,7 @@ func food_consumed() -> void:
 
 func reset_location(location:Vector2, direction:Vector2):
 	body_directions = []
-	position = location + Vector2(body_size/2,body_size/2)
+	position = location + Vector2(cell_size/2,cell_size/2)
 	target = position
 	for body in body_parts:
 		body.queue_free()

@@ -1,4 +1,9 @@
-res://scenes/SnakeBody.tscn
+res://scenes/Main.tscn
 res://assets/new_tile_set.tres
 res://scripts/SnakeHead.gd
-res://scenes/Main.tscn
+res://scenes/SnakeHead.tscn
+res://scenes/level_manager.tscn
+res://scripts/LevelManager.gd
+res://scripts/GameManager.gd
+res://scripts/levels.txt
+res://scripts/Exit.gd
