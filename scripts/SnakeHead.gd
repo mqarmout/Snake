@@ -3,21 +3,21 @@ extends CharacterBody2D
 @onready var body_scene = preload("res://scenes/SnakeBody.tscn")
 
 var speed = 15
-var cell_size:float = 8
-var can_make_move:bool = true
-var target:Vector2
+var cell_size: float = 8
+var can_make_move: bool = true
+var target: Vector2
 
-var body_directions:Array[Vector2] = []
-var body_parts:Array[CharacterBody2D] = []
+var body_directions: Array[Vector2] = []
+var body_parts: Array[CharacterBody2D] = []
 
-var current_direction:Vector2 = Vector2.ZERO
+var current_direction: Vector2 = Vector2.ZERO
 
-func getInput(_delta:float):
+func getInput(_delta: float):
 	var new_input = Input.get_vector("left", "right", "up", "down").round()
-	var direction:Vector2 = determine_direction(new_input)
+	var direction: Vector2 = determine_direction(new_input)
 	move(direction, _delta)
 
-func move(direction:Vector2, _delta:float) -> void:
+func move(direction: Vector2, _delta: float) -> void:
 	if target == position && can_make_move:
 		if direction != Vector2.ZERO:
 			rotation = direction.angle()
@@ -28,7 +28,7 @@ func move(direction:Vector2, _delta:float) -> void:
 	if !can_make_move:
 		position = position.move_toward(target, _delta * speed)
 
-func determine_direction(new_input:Vector2) -> Vector2:
+func determine_direction(new_input: Vector2) -> Vector2:
 	current_direction = Vector2(cos(rotation), sin(rotation))
 	if new_input == current_direction * -1:
 		return Vector2.ZERO
@@ -38,9 +38,9 @@ func determine_direction(new_input:Vector2) -> Vector2:
 	return new_input
 
 func instantiate_body() -> void:
-	var index:int = 0
+	var index: int = 0
 	for body_direction in body_directions:
-		var initial_position:Vector2 = self.position
+		var initial_position: Vector2 = self.position
 		if body_parts.size() > 0:
 			initial_position = body_parts.get(index).position
 		attach_new_body(initial_position, body_direction)
@@ -54,13 +54,13 @@ func update_queue() -> void:
 	body_directions.pop_back()
 
 func update_children() -> void:
-	var index:int = 0
+	var index: int = 0
 	for body in body_parts:
 		body.movement_direction = body_directions.get(index)
 		index += 1
 
-func attach_new_body(attachement_position:Vector2, direction:Vector2) -> void:
-	var body_part:CharacterBody2D = body_scene.instantiate()
+func attach_new_body(attachement_position: Vector2, direction: Vector2) -> void:
+	var body_part: CharacterBody2D = body_scene.instantiate()
 	body_part.position = attachement_position - (direction * cell_size)
 	body_parts.append(body_part)
 	add_sibling.call_deferred(body_part)
@@ -71,7 +71,7 @@ func food_consumed() -> void:
 	body_directions.append(Vector2.ZERO)
 	attach_new_body(last_body_position, Vector2.ZERO)
 
-func reset_location(location:Vector2, direction:Vector2):
+func reset_location(location: Vector2, direction: Vector2):
 	body_directions = []
 	position = location + Vector2(cell_size/2,cell_size/2)
 	target = position
