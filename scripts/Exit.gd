@@ -10,3 +10,7 @@ extends Area2D
 func _on_body_exited(body: Node2D) -> void:
 	if body.name == "SnakeHead":
 		game_manager.level_cleared()
+
+
+func _on_ready() -> void:
+	self.name = "Exit"

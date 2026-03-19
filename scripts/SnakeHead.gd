@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @onready var body_scene = preload("res://scenes/SnakeBody.tscn")
+@onready var game_manager: Node2D = $"../GameManager"
 
 var speed = 15
 var cell_size: float = 8
@@ -11,6 +12,8 @@ var body_directions: Array[Vector2] = []
 var body_parts: Array[CharacterBody2D] = []
 
 var current_direction: Vector2 = Vector2.ZERO
+var reset_location: Vector2
+var reset_rotation: int
 
 func getInput(_delta: float):
 	var new_input = Input.get_vector("left", "right", "up", "down").round()
@@ -66,22 +69,45 @@ func attach_new_body(attachement_position: Vector2, direction: Vector2) -> void:
 	add_sibling.call_deferred(body_part)
 
 func food_consumed() -> void:
-	# rewrite to detect the object interacted with and act accordingly instead of waiting for a signal from the object
 	var last_body_position: Vector2 = self.position if body_parts.size() == 0 else body_parts.back().position
 	body_directions.append(Vector2.ZERO)
 	attach_new_body(last_body_position, Vector2.ZERO)
 
-func reset_location(location: Vector2, direction: Vector2):
+func reset_function():
 	body_directions = []
-	position = location + Vector2(cell_size/2,cell_size/2)
+	position = reset_location
+	current_direction = Vector2(cos(rotation), sin(rotation))
+	rotation = reset_rotation
 	target = position
 	for body in body_parts:
 		body.queue_free()
 	body_parts.clear()
 	instantiate_body()
 
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.name == "LevelManager":
+		reset_function()
+	if body.name == "SnakeBody":
+		reset_function()
+
+func _on_area_2d_area_entered(area: Area2D) -> void:
+	if area.name.contains("Food"):
+		food_consumed()
+		game_manager.food_consumed(area)
+
+func _on_area_2d_area_exited(area: Area2D) -> void:
+	if area.name.contains("Exit"):
+		reset_location = area.position + current_direction * cell_size
+		reset_rotation = int(rotation)
+		#move isn't happening cuz the call happens mid movement which isn't allowed
+		#maybe add move buffer?
+		move(current_direction, get_physics_process_delta_time())
+
 func _on_ready() -> void:
 	target = position
+	reset_location = position
+	reset_rotation = int(rotation)
 	instantiate_body()
 
 func _physics_process(_delta):
