@@ -7,9 +7,9 @@ extends Area2D
 		#game_manager.cleared_level()
 
 
-func _on_body_exited(body: Node2D) -> void:
-	if body.name == "SnakeHead":
-		game_manager.level_cleared()
+#func _on_body_exited(body: Node2D) -> void:
+	#if body.name == "SnakeHead":
+		#game_manager.level_cleared()
 
 
 func _on_ready() -> void:

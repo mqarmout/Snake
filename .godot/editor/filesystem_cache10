@@ -1,5 +1,5 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1773871357
+::res://::1774033138
 icon.svg::CompressedTexture2D::1770687553381644050::1770335099::1771979094::1::::<><><>0<>0<>24a7ed4e6f1bec7a2d12cbd462815320<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 ::res://addons/::1770335422
 ::res://addons/godot-git-plugin/::1770335422
@@ -8,22 +8,22 @@ THIRDPARTY.md::TextFile::-1::1770335422::0::1::::<><><>0<>0<><>::
 ::res://addons/godot-git-plugin/linux/::1770335422
 ::res://addons/godot-git-plugin/macos/::1770335422
 ::res://addons/godot-git-plugin/windows/::1770335422
-::res://assets/::1773700366
+::res://assets/::1773871482
 Itch release raw tileset 01.png::CompressedTexture2D::7255236498443158043::1770774778::1771979094::1::::<><><>0<>0<>acf3c448a806164a5154f033b36fdfa4<>res://.godot/imported/Itch release raw tileset 01.png-97dded697de1ad288a8180472c66cf81.ctex::
-new_tile_set.tres::TileSet::1605940451021151965::1773700366::0::1::::<><><>0<>0<><>::uid://dbmqxkague2ap::::res://assets/Itch release raw tileset 01.png
-::res://scenes/::1773702331
-Exit.tscn::PackedScene::7248125724763432177::1771898128::0::1::::<><><>0<>0<><>::uid://0hy725j3duri::::res://icon.svg<>uid://g4c4jv616tc5::::res://scripts/Exit.gd
-Food.tscn::PackedScene::4467135194714972543::1771896515::0::1::::<><><>0<>0<><>::uid://rugexfsbft76::::res://scripts/Food.gd<>uid://0hy725j3duri::::res://icon.svg
-level_manager.tscn::PackedScene::9118174800190572883::1773700556::0::1::::<><><>0<>0<><>::uid://w46us6dm7hc4::::res://assets/new_tile_set.tres<>uid://ywm8bcgfckvl::::res://scripts/LevelManager.gd
+new_tile_set.tres::TileSet::1605940451021151965::1773871482::0::1::::<><><>0<>0<><>::uid://dbmqxkague2ap::::res://assets/Itch release raw tileset 01.png
+::res://scenes/::1773921254
+Exit.tscn::PackedScene::7248125724763432177::1773921084::0::1::::<><><>0<>0<><>::uid://0hy725j3duri::::res://icon.svg<>uid://g4c4jv616tc5::::res://scripts/Exit.gd
+Food.tscn::PackedScene::4467135194714972543::1773919264::0::1::::<><><>0<>0<><>::uid://rugexfsbft76::::res://scripts/Food.gd<>uid://0hy725j3duri::::res://icon.svg
+level_manager.tscn::PackedScene::9118174800190572883::1773872277::0::1::::<><><>0<>0<><>::uid://w46us6dm7hc4::::res://assets/new_tile_set.tres<>uid://ywm8bcgfckvl::::res://scripts/LevelManager.gd
 Main.tscn::PackedScene::8631230869158715564::1773702331::0::1::::<><><>0<>0<><>::uid://cxo5b7cpifdk::::res://scenes/SnakeHead.tscn<>uid://br4yv7sxl5whe::::res://scripts/GameManager.gd<>uid://c2hxili67wem::::res://scripts/camera.gd<>uid://d256ah3mrxrrf::::res://scenes/level_manager.tscn
-SnakeBody.tscn::PackedScene::8834013976394311971::1773343585::0::1::::<><><>0<>0<><>::uid://qxn4dc7uvsb0::::res://scripts/SnakeBody.gd<>uid://0hy725j3duri::::res://icon.svg
-SnakeHead.tscn::PackedScene::188762089403644660::1773533101::0::1::::<><><>0<>0<><>::uid://0hy725j3duri::::res://icon.svg<>uid://be7ceoxssjala::::res://scripts/SnakeHead.gd
-::res://scripts/::1773702308
+SnakeBody.tscn::PackedScene::8834013976394311971::1773872295::0::1::::<><><>0<>0<><>::uid://qxn4dc7uvsb0::::res://scripts/SnakeBody.gd<>uid://0hy725j3duri::::res://icon.svg
+SnakeHead.tscn::PackedScene::188762089403644660::1773921254::0::1::::<><><>0<>0<><>::uid://0hy725j3duri::::res://icon.svg<>uid://be7ceoxssjala::::res://scripts/SnakeHead.gd
+::res://scripts/::1773921243
 camera.gd::GDScript::196582416430699420::1773702308::0::1::::<>Camera2D<><>0<>0<><>::
-Exit.gd::GDScript::481173745300230118::1773701348::0::1::::<>Area2D<><>0<>0<><>::
-Food.gd::GDScript::1234870558640433379::1772322935::0::1::::<>Area2D<><>0<>0<><>::
-GameManager.gd::GDScript::3640994399520386378::1773702222::0::1::::<>Node2D<><>0<>0<><>::
+Exit.gd::GDScript::481173745300230118::1773919586::0::1::::<>Area2D<><>0<>0<><>::
+Food.gd::GDScript::1234870558640433379::1773873176::0::1::::<>Area2D<><>0<>0<><>::
+GameManager.gd::GDScript::3640994399520386378::1773920425::0::1::::<>Node2D<><>0<>0<><>::
 LevelManager.gd::GDScript::1730736148906495517::1773702294::0::1::::<>TileMapLayer<><>0<>0<><>::
-levels.txt::TextFile::-1::1773702087::0::1::::<><><>0<>0<><>::
+levels.txt::TextFile::-1::1773873291::0::1::::<><><>0<>0<><>::
 SnakeBody.gd::GDScript::1171343457622264811::1771892455::0::1::::<>CharacterBody2D<><>0<>0<><>::
-SnakeHead.gd::GDScript::2733365495235945310::1773701038::0::1::::<>CharacterBody2D<><>0<>0<><>::
+SnakeHead.gd::GDScript::2733365495235945310::1773921243::0::1::::<>CharacterBody2D<><>0<>0<><>::

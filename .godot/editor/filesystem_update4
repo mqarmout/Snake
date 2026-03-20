@@ -1,11 +1,4 @@
-res://scenes/level_manager.tscn
-res://assets/new_tile_set.tres
-res://scripts/SnakeHead.gd
 res://scenes/SnakeHead.tscn
-res://scenes/SnakeBody.tscn
-res://scripts/Food.gd
-res://scenes/Food.tscn
-res://scripts/GameManager.gd
-res://scripts/levels.txt
+res://assets/new_tile_set.tres
 res://scripts/Exit.gd
-res://scenes/Exit.tscn
+res://scripts/SnakeHead.gd

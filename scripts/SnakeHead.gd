@@ -14,6 +14,7 @@ var body_parts: Array[CharacterBody2D] = []
 var current_direction: Vector2 = Vector2.ZERO
 var reset_location: Vector2
 var reset_rotation: int
+var died: bool = false
 
 func getInput(_delta: float):
 	var new_input = Input.get_vector("left", "right", "up", "down").round()
@@ -21,14 +22,15 @@ func getInput(_delta: float):
 	move(direction, _delta)
 
 func move(direction: Vector2, _delta: float) -> void:
-	if target == position && can_make_move:
+	if target == position and can_make_move:
 		if direction != Vector2.ZERO:
 			rotation = direction.angle()
 		target = position + direction * cell_size
 		can_make_move = false
-	elif target == position && !can_make_move:
+	elif target == position and !can_make_move:
 		can_make_move = true
 	if !can_make_move:
+		died = false
 		position = position.move_toward(target, _delta * speed)
 
 func determine_direction(new_input: Vector2) -> Vector2:
@@ -74,6 +76,7 @@ func food_consumed() -> void:
 	attach_new_body(last_body_position, Vector2.ZERO)
 
 func reset_function():
+	died = true
 	body_directions = []
 	position = reset_location
 	current_direction = Vector2(cos(rotation), sin(rotation))
@@ -83,7 +86,6 @@ func reset_function():
 		body.queue_free()
 	body_parts.clear()
 	instantiate_body()
-
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.name == "LevelManager":
@@ -97,12 +99,10 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		game_manager.food_consumed(area)
 
 func _on_area_2d_area_exited(area: Area2D) -> void:
-	if area.name.contains("Exit"):
+	if area.name.contains("Exit") and !died:
 		reset_location = area.position + current_direction * cell_size
 		reset_rotation = int(rotation)
-		#move isn't happening cuz the call happens mid movement which isn't allowed
-		#maybe add move buffer?
-		move(current_direction, get_physics_process_delta_time())
+		game_manager.level_cleared()
 
 func _on_ready() -> void:
 	target = position
