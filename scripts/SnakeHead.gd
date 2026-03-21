@@ -39,7 +39,6 @@ func determine_direction(new_input: Vector2) -> Vector2:
 	if new_input == current_direction * -1:
 		return Vector2.ZERO
 	if new_input.abs() == Vector2.ONE:
-		print((current_direction.abs() - new_input.abs()) * new_input)
 		return (current_direction.abs() - new_input.abs()) * new_input
 	return new_input
 
@@ -79,7 +78,6 @@ func food_consumed() -> void:
 	var last_body_position: Vector2 = target if body_parts.size() == 0 else body_parts.back().target
 	var direction: Vector2 = current_direction if body_parts.size() == 0 else body_directions.back()
 	var new_body_part_position = last_body_position - direction * cell_size
-	print(last_body_position)
 	body_directions.append(Vector2.ZERO)
 	attach_new_body(new_body_part_position)
 
@@ -101,13 +99,13 @@ func reset_body() -> void:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.name == "LevelManager":
 		reset_head()
-	if body.name == "SnakeBody":
-		reset_head()
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.name.contains("Food"):
 		food_consumed()
 		game_manager.food_consumed(area)
+	if area.get_parent().name.contains("SnakeBody"):
+		reset_head()
 
 func _on_area_2d_area_exited(area: Area2D) -> void:
 	if area.name.contains("Exit") and !died:
