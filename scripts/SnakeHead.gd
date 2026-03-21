@@ -76,19 +76,23 @@ func attach_new_body(attachement_position: Vector2) -> void:
 	add_sibling.call_deferred(body_part)
 
 func food_consumed() -> void:
-	var last_body_position: Vector2 = target if body_parts.size() == 0 else body_parts.back().position
+	var last_body_position: Vector2 = target if body_parts.size() == 0 else body_parts.back().target
 	var direction: Vector2 = current_direction if body_parts.size() == 0 else body_directions.back()
 	var new_body_part_position = last_body_position - direction * cell_size
+	print(last_body_position)
 	body_directions.append(Vector2.ZERO)
 	attach_new_body(new_body_part_position)
 
-func reset_function():
+func reset_head():
 	died = true
-	body_directions = []
 	position = reset_location
 	current_direction = Vector2(cos(rotation), sin(rotation))
 	rotation = reset_rotation
 	target = position
+	reset_body()
+
+func reset_body() -> void:
+	body_directions = []
 	for body in body_parts:
 		body.queue_free()
 	body_parts.clear()
@@ -96,9 +100,9 @@ func reset_function():
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.name == "LevelManager":
-		reset_function()
+		reset_head()
 	if body.name == "SnakeBody":
-		reset_function()
+		reset_head()
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.name.contains("Food"):
@@ -110,6 +114,7 @@ func _on_area_2d_area_exited(area: Area2D) -> void:
 		reset_location = area.position + current_direction * cell_size
 		reset_rotation = int(rotation)
 		game_manager.level_cleared()
+		reset_body()
 
 func _on_ready() -> void:
 	target = position
