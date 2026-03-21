@@ -1,4 +1,5 @@
 res://scenes/SnakeHead.tscn
 res://assets/new_tile_set.tres
-res://scripts/Exit.gd
 res://scripts/SnakeHead.gd
+res://scripts/SnakeBody.gd
+res://scenes/SnakeBody.tscn

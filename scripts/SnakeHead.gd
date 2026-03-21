@@ -19,12 +19,13 @@ var died: bool = false
 func getInput(_delta: float):
 	var new_input = Input.get_vector("left", "right", "up", "down").round()
 	var direction: Vector2 = determine_direction(new_input)
-	move(direction, _delta)
+	if new_input != Vector2.ZERO || target != position: move(direction, _delta)
 
 func move(direction: Vector2, _delta: float) -> void:
 	if target == position and can_make_move:
 		if direction != Vector2.ZERO:
 			rotation = direction.angle()
+			update_queue()
 		target = position + direction * cell_size
 		can_make_move = false
 	elif target == position and !can_make_move:
@@ -48,32 +49,38 @@ func instantiate_body() -> void:
 		var initial_position: Vector2 = self.position
 		if body_parts.size() > 0:
 			initial_position = body_parts.get(index).position
-		attach_new_body(initial_position, body_direction)
+		attach_new_body(initial_position)
 		index += 1
 
 func update_queue() -> void:
-	update_children()
 	body_directions.reverse()
 	body_directions.append(current_direction)
 	body_directions.reverse()
 	body_directions.pop_back()
+	update_children()
 
 func update_children() -> void:
 	var index: int = 0
 	for body in body_parts:
-		body.movement_direction = body_directions.get(index)
+		var body_direction: Vector2 = body_directions.get(index)
+		var new_body_part_target = body.position + body_direction * cell_size
+		body.target = new_body_part_target
+		body.rotation = body_direction.angle()
 		index += 1
 
-func attach_new_body(attachement_position: Vector2, direction: Vector2) -> void:
+func attach_new_body(attachement_position: Vector2) -> void:
 	var body_part: CharacterBody2D = body_scene.instantiate()
-	body_part.position = attachement_position - (direction * cell_size)
+	body_part.position = attachement_position
+	body_part.rotation = rotation
 	body_parts.append(body_part)
 	add_sibling.call_deferred(body_part)
 
 func food_consumed() -> void:
-	var last_body_position: Vector2 = self.position if body_parts.size() == 0 else body_parts.back().position
+	var last_body_position: Vector2 = target if body_parts.size() == 0 else body_parts.back().position
+	var direction: Vector2 = current_direction if body_parts.size() == 0 else body_directions.back()
+	var new_body_part_position = last_body_position - direction * cell_size
 	body_directions.append(Vector2.ZERO)
-	attach_new_body(last_body_position, Vector2.ZERO)
+	attach_new_body(new_body_part_position)
 
 func reset_function():
 	died = true

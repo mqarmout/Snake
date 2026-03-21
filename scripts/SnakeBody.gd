@@ -1,11 +1,14 @@
 extends CharacterBody2D
 
 var speed = 15
-var movement_direction: Vector2 = Vector2.ZERO
+var target: Vector2
 
-func move():
-	velocity = movement_direction * speed
+func move(_delta: float):
+	position = position.move_toward(target, _delta * speed)
 
 func _physics_process(_delta):
-	move()
+	move(_delta)
 	move_and_slide()
+
+func _on_ready() -> void:
+	target = position
