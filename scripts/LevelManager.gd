@@ -9,6 +9,7 @@ var placed_objects: Dictionary[int,Array]
 var cell_size: int = 8
 
 var stages = []
+var stage_interactables = []
 var level_start_coordinates = []
 var tile_types = {
 	0: Vector2(1,0),
@@ -27,9 +28,6 @@ var object_types = {}
 func _on_ready() -> void:
 	setup_objects_dictionary()
 	load_levels_file_content()
-	draw_level(1, 1)
-	draw_level(1, 2)
-	draw_level(1, 3)
 
 func setup_objects_dictionary() -> void:
 	object_types = {
@@ -46,6 +44,11 @@ func free_object(_object: Area2D, level: int):
 			return
 		index += 1
 
+func clear_level(level: int) -> void:
+	for placed_object in placed_objects[level]:
+		placed_object.queue_free()
+	placed_objects[level].clear()
+
 func add_object(attachement_position: Vector2, object_scene: PackedScene, level: int) -> void:
 	var object_node: Area2D = object_scene.instantiate()
 	object_node.position = attachement_position * object_displacement_multiplier + object_displacement
@@ -54,10 +57,11 @@ func add_object(attachement_position: Vector2, object_scene: PackedScene, level:
 	placed_objects[level].append(object_node)
 	add_sibling.call_deferred(object_node)
 
-func clear_level(level: int) -> void:
-	for placed_object in placed_objects[level]:
-		placed_object.queue_free()
-	placed_objects[level].clear()
+func place_interactables(level: int) -> void:
+	var start_coordinate = level_start_coordinates[level - 1]
+	for level_interactable in stage_interactables[level - 1]:
+		if object_types.has(level_interactable[1]):
+			add_object(start_coordinate + level_interactable[0], object_types[level_interactable[1]], level)
 
 func draw_level(stage: int, level: int) -> void:
 	var index = 0
@@ -65,11 +69,14 @@ func draw_level(stage: int, level: int) -> void:
 	for row in stages[stage - 1][level - 1]:
 		var level_length = stages[stage - 1][level - 1].size()
 		for cell in row:
-			var coordinates: Vector2 = start_coordinate + Vector2(int(index%level_length), int(index/level_length))
+			var coordinates: Vector2 = start_coordinate + Vector2(int(index/level_length), int(index%level_length))
 			set_cell(coordinates, 0, tile_types[cell])
-			if object_types.has(cell):
-				add_object(coordinates, object_types[cell], level)
 			index += 1
+
+func draw_all_levels(stage: int) -> void:
+	for level in stages[stage - 1].size():
+		draw_level(stage, level + 1)
+		place_interactables(level + 1)
 
 func load_levels_file_content() -> void:
 	var file = FileAccess.open("res://scripts/levels.txt", FileAccess.READ)
@@ -112,10 +119,13 @@ func load_levels_file_content() -> void:
 				new_level.append(new_line)
 			
 			objects_counter = 0
+			var level_interactables = []
 			for _object in objects:
 				new_level[objects_locations[objects_counter].x][objects_locations[objects_counter].y] = _object
+				level_interactables.append([objects_locations[objects_counter],_object])
 				objects_counter += 1
 			levels.append(new_level)
+			stage_interactables.append(level_interactables)
 			
 			counter += 4
 		stages.append(levels)

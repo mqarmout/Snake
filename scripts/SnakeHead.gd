@@ -99,6 +99,7 @@ func reset_body() -> void:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.name == "LevelManager":
 		reset_head()
+		game_manager.reset_level()
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.name.contains("Food"):
@@ -106,6 +107,7 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		game_manager.food_consumed(area)
 	if area.get_parent().name.contains("SnakeBody"):
 		reset_head()
+		game_manager.reset_level()
 
 func _on_area_2d_area_exited(area: Area2D) -> void:
 	if area.name.contains("Exit") and !died:
