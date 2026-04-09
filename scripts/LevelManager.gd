@@ -27,7 +27,6 @@ var object_types = {}
 
 func _on_ready() -> void:
 	setup_objects_dictionary()
-	load_levels_file_content()
 
 func setup_objects_dictionary() -> void:
 	object_types = {
@@ -78,8 +77,8 @@ func draw_all_levels(stage: int) -> void:
 		draw_level(stage, level + 1)
 		place_interactables(level + 1)
 
-func load_levels_file_content() -> void:
-	var file = FileAccess.open("res://scripts/levels.txt", FileAccess.READ)
+func load_stage(stage: int) -> void:
+	var file = FileAccess.open("res://stages/stage_%s.txt" % stage, FileAccess.READ)
 	var content = file.get_as_text()
 	var found_stages: Array = content.split("s")
 	found_stages.pop_back()
@@ -134,3 +133,8 @@ func get_current_level_center(stage: int, level: int) -> Vector2:
 	var horizontal_level_length = stages[stage - 1][level - 1][0].size()
 	var vertical_level_length = stages[stage - 1][level - 1].size()
 	return level_start_coordinates[level - 1] * cell_size + Vector2(horizontal_level_length * cell_size / 2, vertical_level_length * cell_size / 2)
+
+func update_stage_text_file() -> void:
+	print("saving changes")
+	print(self.tile_map_data)
+	pass
