@@ -136,5 +136,9 @@ func get_current_level_center(stage: int, level: int) -> Vector2:
 
 func update_stage_text_file() -> void:
 	print("saving changes")
-	print(self.tile_map_data)
-	pass
+	var used_cells :Array = self.get_used_cells()
+	var current_map: Array = []
+	for cell in used_cells:
+		current_map
+	print(current_map)
+	print(stages[0][0])

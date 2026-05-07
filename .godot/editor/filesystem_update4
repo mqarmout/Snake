@@ -1,5 +1,4 @@
 res://scenes/Main.tscn
 res://assets/new_tile_set.tres
-res://scripts/LevelManager.gd
-res://stages/stage_1.txt
 res://scripts/GameManager.gd
+res://scripts/LevelManager.gd
