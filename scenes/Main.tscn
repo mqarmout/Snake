@@ -13,15 +13,14 @@
 position = Vector2(20, 28)
 
 [node name="Camera" type="Camera2D" parent="." unique_id=418428337]
-zoom = Vector2(2, 2)
+zoom = Vector2(8, 8)
 position_smoothing_enabled = true
 position_smoothing_speed = 2.5
 script = ExtResource("2_rarhs")
 
-[node name="GameManager" type="Node2D" parent="." unique_id=688680098 node_paths=PackedStringArray("snake_head", "level_manager", "camera")]
+[node name="GameManager" type="Node2D" parent="." unique_id=688680098 node_paths=PackedStringArray("snake_head", "camera")]
 script = ExtResource("1_rvslj")
 snake_head = NodePath("../SnakeHead")
-level_manager = NodePath("../LevelManager")
 camera = NodePath("../Camera")
 
 [connection signal="ready" from="Camera" to="Camera" method="_on_ready"]
