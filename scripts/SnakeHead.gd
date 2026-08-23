@@ -12,7 +12,7 @@ var body_directions: Array[Vector2] = []
 var body_parts: Array[CharacterBody2D] = []
 
 var current_direction: Vector2 = Vector2.ZERO
-var reset_location: Vector2
+var reset_position: Vector2
 var reset_rotation: int
 var died: bool = false
 
@@ -83,7 +83,7 @@ func food_consumed() -> void:
 
 func reset_head():
 	died = true
-	position = reset_location
+	position = reset_position
 	current_direction = Vector2(cos(rotation), sin(rotation))
 	rotation = reset_rotation
 	target = position
@@ -97,12 +97,13 @@ func reset_body() -> void:
 	instantiate_body()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body.name == "LevelManager":
+	if body.name.to_lower() == "levelmanager":
 		reset_head()
 		game_manager.reset_level()
+		print("dead")
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
-	if area.name.contains("Food"):
+	if area.name.to_lower().contains("food"):
 		food_consumed()
 		game_manager.food_consumed(area)
 	if area.get_parent().name.contains("SnakeBody"):
@@ -110,15 +111,16 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		game_manager.reset_level()
 
 func _on_area_2d_area_exited(area: Area2D) -> void:
-	if area.name.contains("Exit") and !died:
-		reset_location = area.position + current_direction * cell_size
+	if area.name.to_lower().contains("exit") and !died:
+		#reset_position = area.position + current_direction * cell_size
 		reset_rotation = int(rotation)
-		game_manager.level_cleared()
+		#game_manager.level_cleared()
 		reset_body()
+		print("exit")
 
 func _on_ready() -> void:
 	target = position
-	reset_location = position
+	reset_position = position
 	reset_rotation = int(rotation)
 	instantiate_body()
 

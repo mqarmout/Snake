@@ -16,12 +16,13 @@ func reset_level() -> void:
 	#level_manager.place_interactables(current_level)
 	pass
 
-func level_cleared() -> void:
+func level_cleared(new_reset_position: Vector2) -> void:
 	#level_manager.clear_level(current_level)
 	current_level += 1
+	reset_position = new_reset_position
+	snake_head.reset_position = new_reset_position
 	#var current_level_center: Vector2 = level_manager.get_current_level_center(current_stage, current_level)
 	#camera.move_camera(current_level_center)
-	print("potaot")
 
 func food_consumed(_object: Area2D):
 	#level_manager.free_object(_object, current_level)
@@ -45,5 +46,5 @@ func _process(_delta: float) -> void:
 
 func clear_multiple_levels(amount: int) -> void:
 	while amount > 0:
-		level_cleared()
+		level_cleared(reset_position)
 		amount -= 1
