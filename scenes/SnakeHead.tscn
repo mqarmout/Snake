@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://be7ceoxssjala" path="res://scripts/SnakeHead.gd" id="2_w0r2f"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w0r2f"]
-radius = 60.033325
+radius = 59.999992
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rh212"]
 radius = 19.999998

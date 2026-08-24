@@ -6,7 +6,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_rjrnx"]
 radius = 61.13101
 
-[node name="Food" type="Area2D" unique_id=1737174497]
+[node name="Food" type="CharacterBody2D" unique_id=2092166061]
 scale = Vector2(0.031, 0.031)
 script = ExtResource("1_2jwtx")
 
@@ -17,5 +17,4 @@ texture = ExtResource("2_w7sr0")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=680106656]
 shape = SubResource("CircleShape2D_rjrnx")
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="ready" from="." to="." method="_on_ready"]

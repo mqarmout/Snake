@@ -11,10 +11,13 @@ var reset_position: Vector2
 
 var editor_mode: bool = false
 
+var consumed_food: Array[CharacterBody2D] = []
+
 func reset_level() -> void:
-	#level_manager.clear_level(current_level)
-	#level_manager.place_interactables(current_level)
-	pass
+	for food in consumed_food:
+		food.reset_food()
+	consumed_food.clear()
+	print("resetting level")
 
 func level_cleared(new_reset_position: Vector2) -> void:
 	#level_manager.clear_level(current_level)
@@ -24,9 +27,9 @@ func level_cleared(new_reset_position: Vector2) -> void:
 	#var current_level_center: Vector2 = level_manager.get_current_level_center(current_stage, current_level)
 	#camera.move_camera(current_level_center)
 
-func food_consumed(_object: Area2D):
-	#level_manager.free_object(_object, current_level)
-	pass
+func food_consumed(_object: CharacterBody2D) -> void:
+	_object.consume()
+	consumed_food.append(_object)
 
 func _on_ready() -> void:
 	#level_manager.load_stage(current_stage)

@@ -96,20 +96,6 @@ func reset_body() -> void:
 	body_parts.clear()
 	instantiate_body()
 
-func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body.name.to_lower() == "levelmanager":
-		reset_head()
-		game_manager.reset_level()
-		print("dead")
-
-func _on_area_2d_area_entered(area: Area2D) -> void:
-	if area.name.to_lower().contains("food"):
-		food_consumed()
-		game_manager.food_consumed(area)
-	if area.get_parent().name.contains("SnakeBody"):
-		reset_head()
-		game_manager.reset_level()
-
 func _on_area_2d_area_exited(area: Area2D) -> void:
 	if area.name.to_lower().contains("exit") and !died:
 		#reset_position = area.position + current_direction * cell_size
@@ -117,6 +103,20 @@ func _on_area_2d_area_exited(area: Area2D) -> void:
 		#game_manager.level_cleared()
 		reset_body()
 		print("exit")
+
+func check_collisions():
+	for i in get_slide_collision_count():
+		var collision := get_slide_collision(i)
+		if collision.get_collider().name.to_lower().contains("levelmanager"):
+			reset_head()
+			game_manager.reset_level()
+		if collision.get_collider().name.to_lower().contains("food"):
+			print("food")
+			food_consumed()
+			game_manager.food_consumed(collision.get_collider())
+		if collision.get_collider().name.contains("SnakeBody"):
+			reset_head()
+			game_manager.reset_level()
 
 func _on_ready() -> void:
 	target = position
@@ -127,3 +127,4 @@ func _on_ready() -> void:
 func _physics_process(_delta):
 	getInput(_delta)
 	move_and_slide()
+	check_collisions()
