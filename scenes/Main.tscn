@@ -8,6 +8,7 @@
 [node name="Main" type="Node2D" unique_id=1413178819]
 
 [node name="LevelManager" parent="." unique_id=134659451 instance=ExtResource("5_vcsgt")]
+position = Vector2(0, 0)
 
 [node name="SnakeHead" parent="." unique_id=429239485 instance=ExtResource("1_elqb8")]
 position = Vector2(-20, 4)
@@ -18,9 +19,10 @@ position_smoothing_enabled = true
 position_smoothing_speed = 2.5
 script = ExtResource("2_rarhs")
 
-[node name="GameManager" type="Node2D" parent="." unique_id=688680098 node_paths=PackedStringArray("snake_head", "camera")]
+[node name="GameManager" type="Node2D" parent="." unique_id=688680098 node_paths=PackedStringArray("snake_head", "level_manager", "camera")]
 script = ExtResource("1_rvslj")
 snake_head = NodePath("../SnakeHead")
+level_manager = NodePath("../LevelManager")
 camera = NodePath("../Camera")
 
 [connection signal="ready" from="Camera" to="Camera" method="_on_ready"]

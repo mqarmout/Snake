@@ -1,4 +1,7 @@
 extends TileMapLayer
+
+@export var level_centers : Array[Vector2]
+
 #
 #@onready var Food_Scene = preload("res://scenes/Food.tscn")
 #@onready var exit_scene = preload("res://scenes/Exit.tscn")
