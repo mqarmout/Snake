@@ -23,7 +23,7 @@ func level_cleared(new_reset_position: Vector2) -> void:
 	reset_position = new_reset_position
 	snake_head.reset_position = new_reset_position
 	consumed_food.clear()
-	var current_level_center: Vector2 = level_manager.get_level_center(current_level)
+	var current_level_center: Vector2 = level_manager.level_centers[current_level - 1]
 	camera.move_camera(current_level_center)
 
 func food_consumed(_object: CharacterBody2D) -> void:
@@ -32,7 +32,7 @@ func food_consumed(_object: CharacterBody2D) -> void:
 
 func _on_ready() -> void:
 	if level_manager != null:
-		var current_level_center: Vector2 = level_manager.get_level_center(current_level)
+		var current_level_center: Vector2 = level_manager.level_centers[current_level - 1]
 		camera.move_camera(current_level_center)
 	#clear_multiple_levels(3)
 	pass
