@@ -1,6 +1,7 @@
 extends TileMapLayer
 
-@export var level_centers : Array[Vector2]
+func get_level_center(level: int) -> Vector2:
+	return get_node("level_%d" % level).position
 
 #
 #@onready var Food_Scene = preload("res://scenes/Food.tscn")
