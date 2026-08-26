@@ -1,10 +1,10 @@
 extends CharacterBody2D
 
-func consume() -> void:
+func interact() -> void:
 	visible = false
 	$CollisionShape2D.set_deferred("disabled", true)
 
-func reset_food() -> void:
+func reset_node() -> void:
 	visible = true
 	$CollisionShape2D.set_deferred("disabled", false)
 

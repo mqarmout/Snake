@@ -98,11 +98,8 @@ func reset_body() -> void:
 
 func _on_area_2d_area_exited(area: Area2D) -> void:
 	if area.name.to_lower().contains("exit") and !died:
-		#reset_position = area.position + current_direction * cell_size
 		reset_rotation = int(rotation)
-		#game_manager.level_cleared()
 		reset_body()
-		print("exit")
 
 func check_collisions():
 	for i in get_slide_collision_count():
@@ -111,7 +108,6 @@ func check_collisions():
 			reset_head()
 			game_manager.reset_level()
 		if collision.get_collider().name.to_lower().contains("food"):
-			print("food")
 			food_consumed()
 			game_manager.food_consumed(collision.get_collider())
 		if collision.get_collider().name.contains("SnakeBody"):
