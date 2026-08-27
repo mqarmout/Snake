@@ -114,6 +114,10 @@ func check_collisions():
 			reset_head()
 			game_manager.reset_level()
 
+func level_cleared() -> void:
+	target = target + current_direction * cell_size
+	move(current_direction, get_process_delta_time())
+
 func _on_ready() -> void:
 	target = position
 	reset_position = position

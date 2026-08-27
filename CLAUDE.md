@@ -34,16 +34,21 @@ step (`update_queue()` shifts the array each step), and `update_children()` appl
 ahead of it took one step ago, not the head's live position. When adding new snake behavior
 (growth, speed changes), this queue is the piece to extend, not per-segment position tracking.
 
-**Levels and stages (`scripts/LevelManager.gd`, `stages/stage_N.txt`).** A "stage" is a custom
-text format (parsed in `load_stage()`), split on `"s"` into stages, each stage further split into
-4-line records per level: start coordinate, dimensions, object type list, object location list.
-`load_stage()` builds a bordered grid per level (`1` = wall, `0` = floor) and stamps object codes
-(from `object_types`, e.g. `3` = Exit, `4` = Food) into their cells. `tile_types` maps a cell code
-to a tileset atlas coordinate for `set_cell()`. Only one level is drawn/active at a time
-(`draw_level`); `GameManager.level_cleared()` advances `current_level` and re-centers the camera
-via `get_current_level_center()`. `draw_all_levels()` and the in-progress `update_stage_text_file()`
-(meant to save editor changes back to the stage file) are present but not wired into normal play —
-treat them as unfinished/experimental if touching level authoring.
+**Levels (`scripts/LevelManager.gd`, `scenes/level_manager.tscn`).** All 5 levels' tiles are
+hand-painted directly into the one `LevelManager` `TileMapLayer` in the editor — there is no
+runtime stage parsing or procedural generation. `stages/stage_N.txt` is a leftover from an earlier
+text-format-driven approach and is no longer read by anything. Under `LevelManager`, `level_1`
+through `level_5` are `Node2D` containers, each with its own `position` marking that level's
+camera-anchor point and holding that level's `Food`/`Exit` instances as children (positioned
+locally to the container). `LevelManager.get_level_center(level)` returns
+`get_node("level_%d" % level).position`; `GameManager.level_cleared()`/`_on_ready()` call it to
+pan the camera. `Food.gd` and `Exit.gd` both implement `interact()` (called from
+`GameManager.food_consumed()`) and `reset_node()` (called by
+`LevelManager.reset_interactables(level)`, which just loops `get_node("level_%d" %
+level).get_children()` — see `GameManager.reset_level()`), so a new interactable type only needs to
+implement that pair, not be special-cased in `GameManager`/`LevelManager`. Adding a 6th level means
+adding a `level_6` `Node2D` under `LevelManager` with its own `position` — no array to keep in
+sync elsewhere.
 
 **Camera.** `scripts/camera.gd` is a thin wrapper (`move_camera(pos)`) — the camera snaps to a
 level's center on `level_cleared()`, it doesn't follow the snake continuously.
