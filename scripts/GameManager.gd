@@ -28,13 +28,13 @@ func _on_ready() -> void:
 	if level_manager != null:
 		var current_level_center: Vector2 = level_manager.get_level_center(current_level)
 		camera.move_camera(current_level_center)
-	#clear_multiple_levels(3)
-	pass
+	clear_multiple_levels(3)
 
 func _process(_delta: float) -> void:
 	pass
 
 func clear_multiple_levels(amount: int) -> void:
 	while amount > 0:
-		level_cleared(reset_position)
+		level_cleared(level_manager.get_reset_position(current_level))
 		amount -= 1
+	snake_head.reset_head()

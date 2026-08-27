@@ -82,6 +82,7 @@ func food_consumed() -> void:
 	attach_new_body(new_body_part_position)
 
 func reset_head():
+	print("reset head")
 	died = true
 	position = reset_position
 	current_direction = Vector2(cos(rotation), sin(rotation))
