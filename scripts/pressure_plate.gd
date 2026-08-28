@@ -12,6 +12,12 @@ func _on_body_exited(body: Node2D) -> void:
 	if body.name.to_lower().contains("snake"):
 		pressure_count -= 1
 
+func reset_node() -> void:
+	pass
+
+func interact() -> void:
+	pass
+
 func _ready() -> void:
 	pass
 

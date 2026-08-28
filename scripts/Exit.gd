@@ -24,6 +24,7 @@ func _on_body_entered(body: Node2D) -> void:
 		return
 	if not flags["open"]:
 		body.reset_head()
+		game_manager.reset_level()
 		return
 	if not flags["visited"]:
 		body.level_cleared()
