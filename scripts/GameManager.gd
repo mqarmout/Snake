@@ -4,12 +4,12 @@ extends Node2D
 @export var level_manager: TileMapLayer
 @export var camera: Camera2D
 
-var current_level: int = 1
-var current_stage: int = 1
+var current_level := 1
+var current_stage := 1
 
 var reset_position: Vector2
 
-var editor_mode: bool = false
+var editor_mode := false
 
 func reset_level() -> void:
 	level_manager.reset_interactables(current_level)

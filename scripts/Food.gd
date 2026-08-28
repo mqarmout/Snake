@@ -9,5 +9,4 @@ func reset_node() -> void:
 	$CollisionShape2D.set_deferred("disabled", false)
 
 func _on_ready() -> void:
-	#self.name = "Food"
 	pass
