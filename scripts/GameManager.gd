@@ -20,6 +20,7 @@ func level_cleared(new_reset_position: Vector2) -> void:
 	snake_head.reset_position = new_reset_position
 	var current_level_center: Vector2 = level_manager.get_level_center(current_level)
 	camera.move_camera(current_level_center)
+	camera.zoom_camera(level_manager.get_level_scale(current_level))
 
 func food_consumed(_object: CharacterBody2D) -> void:
 	_object.interact()
@@ -28,7 +29,7 @@ func _on_ready() -> void:
 	if level_manager != null:
 		var current_level_center: Vector2 = level_manager.get_level_center(current_level)
 		camera.move_camera(current_level_center)
-	clear_multiple_levels(1)
+		camera.zoom_camera(level_manager.get_level_scale(current_level))
 
 func _process(_delta: float) -> void:
 	pass

@@ -20,6 +20,8 @@ func reset_node() -> void:
 	modulate = Color.html("#0eb2dd")
 
 func _on_body_entered(body: Node2D) -> void:
+	if not body.name.to_lower().contains("snake"):
+		return
 	if not flags["open"]:
 		body.reset_head()
 		return
@@ -30,4 +32,5 @@ func _on_body_entered(body: Node2D) -> void:
 		flags["visited"] = true
 
 func _on_ready() -> void:
-	pass
+	if name.to_lower().contains("level_1"):
+		flags["open"] = true

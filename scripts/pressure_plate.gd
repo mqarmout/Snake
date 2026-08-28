@@ -5,7 +5,6 @@ extends Area2D
 var pressure_count := 0
 
 func _on_body_entered(body: Node2D) -> void:
-	print(body.name)
 	if body.name.to_lower().contains("snake"):
 		pressure_count += 1
 
