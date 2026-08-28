@@ -28,7 +28,7 @@ func _on_ready() -> void:
 	if level_manager != null:
 		var current_level_center: Vector2 = level_manager.get_level_center(current_level)
 		camera.move_camera(current_level_center)
-	clear_multiple_levels(3)
+	clear_multiple_levels(1)
 
 func _process(_delta: float) -> void:
 	pass

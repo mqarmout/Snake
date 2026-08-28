@@ -5,7 +5,9 @@ extends Area2D
 var size := 8
 
 var flags := {
-	"visited": false
+	"visited": false,
+	"open": false,
+	"perma_open": false
 }
 
 func get_reset_position() -> Vector2:
@@ -18,6 +20,9 @@ func reset_node() -> void:
 	modulate = Color.html("#0eb2dd")
 
 func _on_body_entered(body: Node2D) -> void:
+	if not flags["open"]:
+		body.reset_head()
+		return
 	if not flags["visited"]:
 		body.level_cleared()
 		game_manager.level_cleared(get_reset_position())

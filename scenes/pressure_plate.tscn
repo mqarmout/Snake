@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://ckk63o7m5pw3d"]
+
+[ext_resource type="Texture2D" uid="uid://0hy725j3duri" path="res://icon.svg" id="1_ct5vs"]
+[ext_resource type="Script" uid="uid://p6gcd5osjkuh" path="res://scripts/pressure_plate.gd" id="1_xtofl"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ct5vs"]
+radius = 64.51613
+
+[node name="pressure_plate" type="Area2D" unique_id=1681311004]
+scale = Vector2(0.062, 0.062)
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_xtofl")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1099422113]
+modulate = Color(0.15686275, 0.6431373, 0.22745098, 1)
+texture = ExtResource("1_ct5vs")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1725911475]
+shape = SubResource("CircleShape2D_ct5vs")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
