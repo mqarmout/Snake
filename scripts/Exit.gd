@@ -9,7 +9,7 @@ var flags := {
 }
 
 func get_reset_position() -> Vector2:
-	return position + size * reset_direction
+	return global_position + size * reset_direction
 
 func interact() -> void:
 	pass
