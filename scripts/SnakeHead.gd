@@ -87,19 +87,20 @@ func reset_head():
 	current_direction = Vector2(cos(rotation), sin(rotation))
 	rotation = reset_rotation
 	target = position
-	reset_body()
+	drop_body()
 
-func reset_body() -> void:
-	body_directions = []
+func drop_body() -> void:
 	for body in body_parts:
-		body.queue_free()
+		body.set_physics_process(false)
+		body.set_collision_layer_value(1, false)
+		body.set_collision_mask_value(1, false)
+	body_directions = []
 	body_parts.clear()
-	instantiate_body()
 
 func _on_area_2d_area_exited(area: Area2D) -> void:
 	if area.name.to_lower().contains("exit") and !died:
 		reset_rotation = int(rotation)
-		reset_body()
+		drop_body()
 
 func check_collisions():
 	for i in get_slide_collision_count():
