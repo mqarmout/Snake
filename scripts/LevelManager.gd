@@ -10,6 +10,7 @@ func reset_interactables(level: int) -> void:
 		interactable.reset_node()
 
 func get_reset_position(level: int) -> Vector2:
+	if level == 1: return Vector2.ZERO
 	return get_node("level_%d" % level).get_node("level_%d_exit" % level).get_reset_position()
 
 func get_level_scale(level: int) -> int:
