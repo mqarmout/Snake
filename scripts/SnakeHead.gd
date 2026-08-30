@@ -3,40 +3,53 @@ extends CharacterBody2D
 @onready var body_scene = preload("res://scenes/SnakeBody.tscn")
 @onready var game_manager: Node2D = $"../GameManager"
 
-var speed = 15
-var cell_size: float = 8
-var can_make_move: bool = true
-var target: Vector2
+const SPEED := 15
+const CELL_SIZE := 8
 
 var body_directions: Array[Vector2] = []
 var body_parts: Array[CharacterBody2D] = []
 
-var current_direction: Vector2 = Vector2.ZERO
-var reset_position: Vector2
-var reset_rotation: int
+var current_direction := Vector2.ZERO
 var died: bool = false
+var can_make_move := true
+var target: Vector2
 
-func getInput(_delta: float):
+var reset_position = Vector2.ZERO
+var reset_direction := Vector2.RIGHT
+var suppress_until_release := false
+
+func _physics_process(delta):
+	read_input()
+	take_step(delta)
+	move_and_slide()
+	check_collisions()
+
+func read_input():
 	var new_input = Input.get_vector("left", "right", "up", "down").round()
-	var direction: Vector2 = determine_direction(new_input)
-	if new_input != Vector2.ZERO || target != position: move(direction, _delta)
+	if new_input == Vector2.ZERO:
+		suppress_until_release = false
+		current_direction = Vector2.ZERO
+		return
+	if suppress_until_release:
+		return
+	current_direction = determine_direction(new_input)
 
-func move(direction: Vector2, _delta: float) -> void:
+func take_step(delta: float) -> void:
 	if target == position and can_make_move:
-		if direction != Vector2.ZERO:
-			rotation = direction.angle()
+		if current_direction != Vector2.ZERO:
+			rotation = current_direction.angle()
 			update_queue()
-		target = position + direction * cell_size
+		target = position + current_direction * CELL_SIZE
+		current_direction = Vector2.ZERO
 		can_make_move = false
 	elif target == position and !can_make_move:
 		can_make_move = true
 	if !can_make_move:
 		died = false
-		position = position.move_toward(target, _delta * speed)
+	position = position.move_toward(target, delta * SPEED)
 
 func determine_direction(new_input: Vector2) -> Vector2:
-	current_direction = Vector2(cos(rotation), sin(rotation))
-	if new_input == current_direction * -1:
+	if new_input == current_direction * -1 or new_input == Vector2.ZERO:
 		return Vector2.ZERO
 	if new_input.abs() == Vector2.ONE:
 		return (current_direction.abs() - new_input.abs()) * new_input
@@ -62,7 +75,7 @@ func update_children() -> void:
 	var index: int = 0
 	for body in body_parts:
 		var body_direction: Vector2 = body_directions.get(index)
-		var new_body_part_target = body.position + body_direction * cell_size
+		var new_body_part_target = body.position + body_direction * CELL_SIZE
 		body.target = new_body_part_target
 		body.rotation = body_direction.angle()
 		index += 1
@@ -77,15 +90,16 @@ func attach_new_body(attachement_position: Vector2) -> void:
 func food_consumed() -> void:
 	var last_body_position: Vector2 = target if body_parts.size() == 0 else body_parts.back().target
 	var direction: Vector2 = current_direction if body_parts.size() == 0 else body_directions.back()
-	var new_body_part_position = last_body_position - direction * cell_size
+	var new_body_part_position = last_body_position - direction * CELL_SIZE
 	body_directions.append(Vector2.ZERO)
 	attach_new_body(new_body_part_position)
 
 func reset_head():
 	died = true
+	suppress_until_release = true
 	position = reset_position
-	current_direction = Vector2(cos(rotation), sin(rotation))
-	rotation = reset_rotation
+	current_direction = Vector2.ZERO
+	rotation = reset_direction.angle()
 	target = position
 	drop_body()
 
@@ -99,7 +113,7 @@ func drop_body() -> void:
 
 func _on_area_2d_area_exited(area: Area2D) -> void:
 	if area.name.to_lower().contains("exit") and !died:
-		reset_rotation = int(rotation)
+		reset_direction = current_direction
 		drop_body()
 
 func check_collisions():
@@ -116,16 +130,10 @@ func check_collisions():
 			game_manager.reset_level()
 
 func level_cleared() -> void:
-	target = target + current_direction * cell_size
-	move(current_direction, get_process_delta_time())
+	target = target + reset_direction * CELL_SIZE
+	take_step(get_process_delta_time())
 
 func _on_ready() -> void:
 	target = position
 	reset_position = position
-	reset_rotation = int(rotation)
 	instantiate_body()
-
-func _physics_process(_delta):
-	getInput(_delta)
-	move_and_slide()
-	check_collisions()
