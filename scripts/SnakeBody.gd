@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 var speed = 15
 var target: Vector2
+var direction: Vector2
 
 func move(_delta: float):
 	position = position.move_toward(target, _delta * speed)

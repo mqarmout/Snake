@@ -6,13 +6,13 @@ extends Node2D
 
 const SAVEPATH := "user://savegame.cfg"
 
-var current_level := 1
+var current_level := 5
 var current_stage := 1
 
 var reset_position: Vector2
 
 func _on_ready() -> void:
-	load_game()
+	#load_game()
 	if level_manager != null:
 		var current_level_center: Vector2 = level_manager.get_level_center(current_level)
 		camera.move_camera(current_level_center)
@@ -34,7 +34,7 @@ func level_cleared(new_reset_position: Vector2) -> void:
 	var current_level_center: Vector2 = level_manager.get_level_center(current_level)
 	camera.move_camera(current_level_center)
 	camera.zoom_camera(level_manager.get_level_scale(current_level))
-	save_game()
+	#save_game()
 
 func food_consumed(_object: CharacterBody2D) -> void:
 	_object.interact()

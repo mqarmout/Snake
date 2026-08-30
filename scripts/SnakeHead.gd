@@ -15,6 +15,9 @@ var died: bool = false
 var can_make_move := true
 var target: Vector2
 
+var pending_food_position: Vector2
+var has_pending_food := false
+
 var reset_position = Vector2.ZERO
 var reset_direction := Vector2.RIGHT
 var suppress_until_release := false
@@ -38,11 +41,11 @@ func read_input():
 func take_step(delta: float) -> void:
 	if target == position and can_make_move and current_direction != Vector2.ZERO:
 		rotation = current_direction.angle()
-		update_queue()
 		target = position + current_direction * CELL_SIZE
 		last_direction = current_direction
 		current_direction = Vector2.ZERO
 		can_make_move = false
+		update_children()
 	elif target == position and !can_make_move:
 		can_make_move = true
 	if !can_make_move:
@@ -56,44 +59,31 @@ func determine_direction(new_input: Vector2) -> Vector2:
 		return (current_direction.abs() - new_input.abs()) * new_input
 	return new_input
 
-func instantiate_body() -> void:
-	var index: int = 0
-	for body_direction in body_directions:
-		var initial_position: Vector2 = self.position
-		if body_parts.size() > 0:
-			initial_position = body_parts.get(index).position
-		attach_new_body(initial_position)
-		index += 1
-
-func update_queue() -> void:
-	body_directions.reverse()
-	body_directions.append(last_direction)
-	body_directions.reverse()
-	body_directions.pop_back()
-	update_children()
-
 func update_children() -> void:
+	body_directions.push_front(last_direction)
+	if has_pending_food:
+		attach_new_body()
+		body_directions.push_front(Vector2.ZERO)
+		has_pending_food = false
+	body_directions.pop_back()
 	var index: int = 0
 	for body in body_parts:
 		var body_direction: Vector2 = body_directions.get(index)
-		var new_body_part_target = body.position + body_direction * CELL_SIZE
-		body.target = new_body_part_target
+		body.target = body.position + body_direction * CELL_SIZE
 		body.rotation = body_direction.angle()
+		body.set_collision_layer_value(3, true if index > 0 else false)
 		index += 1
 
-func attach_new_body(attachement_position: Vector2) -> void:
+func attach_new_body() -> void:
 	var body_part: CharacterBody2D = body_scene.instantiate()
-	body_part.position = attachement_position
+	body_part.position = pending_food_position
 	body_part.rotation = rotation
-	body_parts.append(body_part)
+	body_parts.push_front(body_part)
 	add_sibling.call_deferred(body_part)
 
 func food_consumed() -> void:
-	var last_body_position: Vector2 = target if body_parts.size() == 0 else body_parts.back().target
-	var direction: Vector2 = last_direction if body_parts.size() == 0 else body_directions.back()
-	var new_body_part_position = last_body_position - direction * CELL_SIZE
-	body_directions.append(Vector2.ZERO)
-	attach_new_body(new_body_part_position)
+	pending_food_position = target - last_direction * CELL_SIZE
+	has_pending_food = true
 
 func reset_head():
 	died = true
@@ -107,8 +97,7 @@ func reset_head():
 func drop_body() -> void:
 	for body in body_parts:
 		body.set_physics_process(false)
-		body.set_collision_layer_value(1, false)
-		body.set_collision_mask_value(1, false)
+		body.set_collision_layer_value(3, false)
 	body_directions = []
 	body_parts.clear()
 

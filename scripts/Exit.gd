@@ -2,7 +2,7 @@ extends Area2D
 
 @onready var game_manager: Node2D = $"../../../GameManager"
 @export var reset_direction: Vector2
-var size := 8
+const SIZE := 8
 
 var flags := {
 	"visited": false,
@@ -11,7 +11,7 @@ var flags := {
 }
 
 func get_reset_position() -> Vector2:
-	return global_position + size * reset_direction
+	return global_position + SIZE * reset_direction
 
 func interact() -> void:
 	pass

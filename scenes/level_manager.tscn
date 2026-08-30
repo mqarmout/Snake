@@ -67,7 +67,7 @@ connected_exit = NodePath("../level_4_exit")
 
 [node name="level_4_exit" parent="level_4" unique_id=247633232 instance=ExtResource("3_lbe5n")]
 position = Vector2(28, 36)
-reset_direction = Vector2(0, -1)
+reset_direction = Vector2(0, 1)
 
 [node name="level_5" type="Node2D" parent="." unique_id=939212922]
 position = Vector2(216, 72)
@@ -93,7 +93,7 @@ connected_exit = NodePath("../level_5_exit")
 
 [node name="level_5_exit" parent="level_5" unique_id=397654329 instance=ExtResource("3_lbe5n")]
 position = Vector2(-12, 35.999996)
-reset_direction = Vector2(0, -1)
+reset_direction = Vector2(0, 1)
 
 [node name="level_6" type="Node2D" parent="." unique_id=702177507]
 position = Vector2(216, 144)
