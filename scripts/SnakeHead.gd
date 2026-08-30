@@ -131,10 +131,9 @@ func check_collisions():
 			game_manager.reset_level()
 
 func level_cleared() -> void:
-	target = target + reset_direction * CELL_SIZE
+	target = target + last_direction * CELL_SIZE
 	take_step(get_process_delta_time())
 
 func _on_ready() -> void:
 	target = position
 	reset_position = position
-	instantiate_body()
