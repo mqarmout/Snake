@@ -30,6 +30,7 @@ func _on_ready() -> void:
 		var current_level_center: Vector2 = level_manager.get_level_center(current_level)
 		camera.move_camera(current_level_center)
 		camera.zoom_camera(level_manager.get_level_scale(current_level))
+	clear_multiple_levels(2)
 
 func _process(_delta: float) -> void:
 	pass

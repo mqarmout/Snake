@@ -10,6 +10,7 @@ var body_directions: Array[Vector2] = []
 var body_parts: Array[CharacterBody2D] = []
 
 var current_direction := Vector2.ZERO
+var last_direction: Vector2
 var died: bool = false
 var can_make_move := true
 var target: Vector2
@@ -35,11 +36,11 @@ func read_input():
 	current_direction = determine_direction(new_input)
 
 func take_step(delta: float) -> void:
-	if target == position and can_make_move:
-		if current_direction != Vector2.ZERO:
-			rotation = current_direction.angle()
-			update_queue()
+	if target == position and can_make_move and current_direction != Vector2.ZERO:
+		rotation = current_direction.angle()
+		update_queue()
 		target = position + current_direction * CELL_SIZE
+		last_direction = current_direction
 		current_direction = Vector2.ZERO
 		can_make_move = false
 	elif target == position and !can_make_move:
@@ -66,7 +67,7 @@ func instantiate_body() -> void:
 
 func update_queue() -> void:
 	body_directions.reverse()
-	body_directions.append(current_direction)
+	body_directions.append(last_direction)
 	body_directions.reverse()
 	body_directions.pop_back()
 	update_children()
@@ -89,7 +90,7 @@ func attach_new_body(attachement_position: Vector2) -> void:
 
 func food_consumed() -> void:
 	var last_body_position: Vector2 = target if body_parts.size() == 0 else body_parts.back().target
-	var direction: Vector2 = current_direction if body_parts.size() == 0 else body_directions.back()
+	var direction: Vector2 = last_direction if body_parts.size() == 0 else body_directions.back()
 	var new_body_part_position = last_body_position - direction * CELL_SIZE
 	body_directions.append(Vector2.ZERO)
 	attach_new_body(new_body_part_position)
