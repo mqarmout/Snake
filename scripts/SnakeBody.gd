@@ -9,7 +9,6 @@ func move(_delta: float):
 
 func _physics_process(_delta):
 	move(_delta)
-	move_and_slide()
 
 func _on_ready() -> void:
 	name = "SnakeBody"

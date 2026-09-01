@@ -35,7 +35,7 @@ reset_direction = Vector2(1, 0)
 [node name="level_3" type="Node2D" parent="." unique_id=91095116]
 position = Vector2(144, 0)
 
-[node name="Food2" parent="level_3" unique_id=2092166061 instance=ExtResource("4_2yrkd")]
+[node name="Food2" parent="level_3" unique_id=1920298652 instance=ExtResource("4_2yrkd")]
 position = Vector2(4, -4)
 
 [node name="Food3" parent="level_3" unique_id=2001961038 instance=ExtResource("4_2yrkd")]
