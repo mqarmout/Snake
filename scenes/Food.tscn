@@ -8,6 +8,8 @@ radius = 61.13101
 
 [node name="Food" type="CharacterBody2D" unique_id=2092166061]
 scale = Vector2(0.031, 0.031)
+collision_layer = 2
+collision_mask = 0
 script = ExtResource("1_2jwtx")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=224730338]

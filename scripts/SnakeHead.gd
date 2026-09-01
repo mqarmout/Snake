@@ -78,7 +78,7 @@ func attach_new_body(body_position: Vector2) -> void:
 	var body_part: CharacterBody2D = body_scene.instantiate()
 	body_part.position = body_position
 	body_part.rotation = rotation
-	body_part.set_collision_layer_value(3, false)
+	body_part.set_collision_layer_value(6, false)
 	if body_parts.size() == 0: body_part.modulate = Color(0.0, 0.0, 0.0, 1.0)
 	body_parts.push_front(body_part)
 	add_sibling.call_deferred(body_part)
@@ -120,7 +120,7 @@ func check_collisions():
 			reset_head()
 			game_manager.reset_level()
 			return
-		if collider_name.contains("food"):
+		if collider_name.contains("food") or collider_name.contains("rat"):
 			has_pending_food = true
 			game_manager.food_consumed(collision.get_collider())
 

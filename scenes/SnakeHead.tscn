@@ -12,7 +12,8 @@ height = 79.99999
 
 [node name="SnakeHead" type="CharacterBody2D" unique_id=429239485]
 scale = Vector2(0.05, 0.05)
-collision_mask = 5
+collision_layer = 16
+collision_mask = 43
 motion_mode = 1
 script = ExtResource("2_w0r2f")
 
@@ -25,6 +26,8 @@ texture = ExtResource("1_svirp")
 shape = SubResource("CircleShape2D_w0r2f")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=3487200]
+collision_layer = 16
+collision_mask = 4
 
 [node name="body_collisionShape" type="CollisionShape2D" parent="Area2D" unique_id=751130725]
 position = Vector2(39.999996, 0)

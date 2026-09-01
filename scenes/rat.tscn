@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://cvselykqffq4i"]
+
+[ext_resource type="Texture2D" uid="uid://0hy725j3duri" path="res://icon.svg" id="1_1l88y"]
+[ext_resource type="Script" uid="uid://cslmogkkr1o4j" path="res://scripts/rat.gd" id="1_77a1s"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6buih"]
+radius = 4.0
+
+[node name="Rat" type="CharacterBody2D" unique_id=1974967274]
+collision_layer = 8
+motion_mode = 1
+script = ExtResource("1_77a1s")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1540057770]
+modulate = Color(0.8627451, 0, 0, 1)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("1_1l88y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1244399086]
+scale = Vector2(0.8, 0.8)
+shape = SubResource("CircleShape2D_6buih")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1385563902]
+position = Vector2(0, -8)
+collision_layer = 8
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=193629659]
+scale = Vector2(0.8, 0.8)
+shape = SubResource("CircleShape2D_6buih")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
