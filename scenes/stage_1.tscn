@@ -21,5 +21,3 @@ script = ExtResource("4_tgiw8")
 
 [node name="SnakeHead" parent="." unique_id=429239485 instance=ExtResource("4_e77qm")]
 position = Vector2(0, 4)
-
-[connection signal="ready" from="Camera" to="Camera" method="_on_ready"]

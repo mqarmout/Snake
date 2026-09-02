@@ -31,3 +31,4 @@ text = "Exit"
 script = ExtResource("2_m7x51")
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/StartGameButton" to="CenterContainer/VBoxContainer/StartGameButton" method="_on_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/ExitGameButton" to="CenterContainer/VBoxContainer/ExitGameButton" method="_on_pressed"]

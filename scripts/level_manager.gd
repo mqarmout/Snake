@@ -18,7 +18,6 @@ func get_reset_direction(level: int) -> Vector2:
 	return get_node("Level%d" % (level - 1)).get_node("Exit").reset_direction
 
 func get_level_scale(level: int) -> int:
-	print(level_scales)
 	return level_scales[level - 1]
 
 func has_next_level(level: int) -> bool:
