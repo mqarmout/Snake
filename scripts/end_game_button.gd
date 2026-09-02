@@ -1,4 +1,4 @@
 extends Button
 
 func _on_pressed() -> void:
-	print("end game")
+	get_tree().quit()
