@@ -102,7 +102,7 @@ func reset_head():
 func drop_body() -> void:
 	for body in body_parts:
 		body.set_physics_process(false)
-		body.set_collision_layer_value(3, false)
+		body.set_collision_layer_value(6, false)
 	body_directions = []
 	body_parts.clear()
 	has_pending_food = false

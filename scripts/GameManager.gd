@@ -6,7 +6,7 @@ extends Node2D
 
 const SAVEPATH := "user://savegame.cfg"
 
-var current_level := 9
+var current_level := 1
 var current_stage := 1
 
 var reset_position: Vector2
