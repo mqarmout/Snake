@@ -68,7 +68,7 @@ func update_children() -> void:
 		var body_direction: Vector2 = body_directions.get(index)
 		if body_direction != Vector2.ZERO: body.rotation = body_direction.angle()
 		body.target = body.position + body_direction * CELL_SIZE
-		body.set_collision_layer_value(3, false if index == 1 or index == body_parts.size() else true)
+		body.set_collision_layer_value(6, false if index == 1 or index == body_parts.size() else true)
 		index += 1
 
 	while body_directions.size() > body_parts.size() + 1:

@@ -33,5 +33,5 @@ func _on_body_entered(body: Node2D) -> void:
 		flags["visited"] = true
 
 func _on_ready() -> void:
-	if name.to_lower().contains("level_1"):
+	if get_parent().name.to_lower().contains("level_1"):
 		flags["open"] = true
