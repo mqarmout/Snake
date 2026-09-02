@@ -27,8 +27,7 @@ func _on_body_entered(body: Node2D) -> void:
 		game_manager.reset_level()
 		return
 	if not flags["visited"]:
-		body.level_cleared()
-		game_manager.level_cleared(get_reset_position())
+		game_manager.level_cleared(get_reset_position(), reset_direction)
 		modulate = Color(1.0, 0.0, 0.0, 1.0)
 		flags["visited"] = true
 

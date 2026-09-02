@@ -10,6 +10,7 @@ var current_level := 1
 var current_stage := 1
 
 var reset_position: Vector2
+var reset_direction: Vector2
 
 func _on_ready() -> void:
 	#load_game()
@@ -18,22 +19,31 @@ func _on_ready() -> void:
 		camera.move_camera(current_level_center)
 		camera.zoom_camera(level_manager.get_level_scale(current_level))
 		reset_position = level_manager.get_reset_position(current_level)
+		reset_direction = level_manager.get_reset_direction(current_level)
 		snake_head.reset_position = reset_position
+		snake_head.reset_direction = reset_direction
 		snake_head.reset_head()
 
 func _process(_delta: float) -> void:
 	pass
 
+func get_reset_position() -> Vector2:
+	return level_manager.get_reset_position(current_level)
+
+func get_reset_direction() -> Vector2:
+	return level_manager.get_reset_direction(current_level)
+
 func reset_level() -> void:
 	level_manager.reset_interactables(current_level)
 
-func level_cleared(new_reset_position: Vector2) -> void:
+func level_cleared(new_reset_position: Vector2, new_reset_direction: Vector2) -> void:
 	current_level += 1
 	reset_position = new_reset_position
-	snake_head.reset_position = new_reset_position
+	reset_direction = new_reset_direction
 	var current_level_center: Vector2 = level_manager.get_level_center(current_level)
 	camera.move_camera(current_level_center)
 	camera.zoom_camera(level_manager.get_level_scale(current_level))
+	snake_head.level_cleared(new_reset_position, new_reset_direction)
 	#save_game()
 
 func food_consumed(_object: CharacterBody2D) -> void:

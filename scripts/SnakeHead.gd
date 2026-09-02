@@ -55,7 +55,7 @@ func take_step(delta: float) -> void:
 	position = position.move_toward(target, delta * SPEED)
 
 func determine_direction(new_input: Vector2) -> Vector2:
-	var direction = body_directions.front() if body_directions.size() > 0 else Vector2.RIGHT
+	var direction = body_directions.front() if body_directions.size() > 0 else game_manager.get_reset_direction()
 	if new_input == direction * -1 or new_input == Vector2.ZERO:
 		return Vector2.ZERO
 	if new_input.abs() == Vector2.ONE:
@@ -89,9 +89,9 @@ func food_consumed() -> void:
 func reset_head():
 	died = true
 	suppress_until_release = true
-	position = reset_position
+	position = game_manager.get_reset_position()
 	current_direction = Vector2.ZERO
-	rotation = reset_direction.angle()
+	rotation = game_manager.get_reset_direction().angle()
 	target = position
 	body_directions = []
 	for body in body_parts:
@@ -109,7 +109,6 @@ func drop_body() -> void:
 
 func _on_area_2d_area_exited(area: Area2D) -> void:
 	if area.name.to_lower().contains("exit") and !died:
-		reset_direction = body_directions.front() if body_directions.size() > 0 else Vector2.RIGHT
 		drop_body()
 
 func check_collisions():
@@ -124,10 +123,10 @@ func check_collisions():
 			has_pending_food = true
 			game_manager.food_consumed(collision.get_collider())
 
-func level_cleared() -> void:
-	var direction = body_directions.front() if body_directions.size() > 0 else Vector2.RIGHT
-	rotation = direction.angle()
-	target = target + direction * CELL_SIZE
+func level_cleared(new_reset_position: Vector2, new_reset_direction: Vector2) -> void:
+	rotation = new_reset_direction.angle()
+	reset_position = new_reset_position
+	target = target + new_reset_direction * CELL_SIZE
 
 func _on_ready() -> void:
 	target = position
