@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cxo5b7cpifdk"]
 
-[ext_resource type="Texture2D" uid="uid://0hy725j3duri" path="res://icon.svg" id="1_svirp"]
-[ext_resource type="Script" uid="uid://be7ceoxssjala" path="res://scripts/SnakeHead.gd" id="2_w0r2f"]
+[ext_resource type="Script" uid="uid://be7ceoxssjala" path="res://scripts/snake_head.gd" id="1_oa4ia"]
+[ext_resource type="Texture2D" uid="uid://0hy725j3duri" path="res://icon.svg" id="2_p4i03"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w0r2f"]
 radius = 59.999992
@@ -15,12 +15,12 @@ scale = Vector2(0.05, 0.05)
 collision_layer = 16
 collision_mask = 43
 motion_mode = 1
-script = ExtResource("2_w0r2f")
+script = ExtResource("1_oa4ia")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1694517222]
 modulate = Color(0.28235295, 0.5411765, 0.28235295, 1)
 rotation = 1.5707964
-texture = ExtResource("1_svirp")
+texture = ExtResource("2_p4i03")
 
 [node name="body_collisionShape" type="CollisionShape2D" parent="." unique_id=251377361]
 shape = SubResource("CircleShape2D_w0r2f")

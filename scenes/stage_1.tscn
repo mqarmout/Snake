@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://du8bd10sloh8o"]
+
+[ext_resource type="Script" uid="uid://ch2h0ay1vel72" path="res://scripts/main.gd" id="1_e77qm"]
+[ext_resource type="PackedScene" uid="uid://d256ah3mrxrrf" path="res://scenes/level_manager.tscn" id="2_kx1yv"]
+[ext_resource type="PackedScene" uid="uid://cxo5b7cpifdk" path="res://scenes/snake_head.tscn" id="4_e77qm"]
+[ext_resource type="Script" uid="uid://c2hxili67wem" path="res://scripts/camera.gd" id="4_tgiw8"]
+
+[node name="Main" type="Node2D" unique_id=1413178819 node_paths=PackedStringArray("snake_head", "level_manager", "camera")]
+script = ExtResource("1_e77qm")
+snake_head = NodePath("SnakeHead")
+level_manager = NodePath("LevelManager")
+camera = NodePath("Camera")
+
+[node name="LevelManager" parent="." unique_id=134659451 instance=ExtResource("2_kx1yv")]
+
+[node name="Camera" type="Camera2D" parent="." unique_id=418428337]
+zoom = Vector2(8, 8)
+position_smoothing_enabled = true
+position_smoothing_speed = 2.5
+script = ExtResource("4_tgiw8")
+
+[node name="SnakeHead" parent="." unique_id=429239485 instance=ExtResource("4_e77qm")]
+position = Vector2(0, 4)
+
+[connection signal="ready" from="Camera" to="Camera" method="_on_ready"]

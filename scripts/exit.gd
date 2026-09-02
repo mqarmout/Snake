@@ -1,6 +1,5 @@
 extends Area2D
 
-@onready var game_manager: Node2D = $"../../../GameManager"
 @export var reset_direction: Vector2
 const SIZE := 8
 
@@ -24,13 +23,13 @@ func _on_body_entered(body: Node2D) -> void:
 		return
 	if not flags["open"]:
 		body.reset_head()
-		game_manager.reset_level()
+		GameManager.reset_level()
 		return
 	if not flags["visited"]:
-		game_manager.level_cleared(get_reset_position(), reset_direction)
+		GameManager.level_cleared(get_reset_position(), reset_direction)
 		modulate = Color(1.0, 0.0, 0.0, 1.0)
 		flags["visited"] = true
 
 func _on_ready() -> void:
-	if get_parent().name.to_lower().contains("level_1"):
+	if get_parent().name.to_lower().contains("level1"):
 		flags["open"] = true

@@ -1,7 +1,6 @@
 extends CharacterBody2D
 
-@onready var body_scene = preload("res://scenes/SnakeBody.tscn")
-@onready var game_manager: Node2D = $"../GameManager"
+var snake_body_scene: PackedScene
 
 const SPEED := 15
 const CELL_SIZE := 8
@@ -27,14 +26,14 @@ func _physics_process(delta):
 	check_collisions()
 
 func read_input():
-	var new_input = Input.get_vector("left", "right", "up", "down").round()
-	if new_input == Vector2.ZERO:
+	var _input = Input.get_vector("left", "right", "up", "down").round()
+	if _input == Vector2.ZERO:
 		suppress_until_release = false
 		current_direction = Vector2.ZERO
 		return
 	if suppress_until_release:
 		return
-	current_direction = determine_direction(new_input)
+	current_direction = determine_direction(_input)
 
 func take_step(delta: float) -> void:
 	if target == position and can_make_move and current_direction != Vector2.ZERO:
@@ -44,7 +43,7 @@ func take_step(delta: float) -> void:
 		current_direction = Vector2.ZERO
 		can_make_move = false
 		if has_pending_food:
-			attach_new_body(target - body_directions.front() * CELL_SIZE)
+			attach__body(target - body_directions.front() * CELL_SIZE)
 			has_pending_food = false
 		else:
 			update_children()
@@ -54,13 +53,13 @@ func take_step(delta: float) -> void:
 		died = false
 	position = position.move_toward(target, delta * SPEED)
 
-func determine_direction(new_input: Vector2) -> Vector2:
-	var direction = body_directions.front() if body_directions.size() > 0 else game_manager.get_reset_direction()
-	if new_input == direction * -1 or new_input == Vector2.ZERO:
+func determine_direction(_input: Vector2) -> Vector2:
+	var direction = body_directions.front() if body_directions.size() > 0 else GameManager.get_reset_direction()
+	if _input == direction * -1 or _input == Vector2.ZERO:
 		return Vector2.ZERO
-	if new_input.abs() == Vector2.ONE:
-		return (direction.abs() - new_input.abs()) * new_input
-	return new_input
+	if _input.abs() == Vector2.ONE:
+		return (direction.abs() - _input.abs()) * _input
+	return _input
 
 func update_children() -> void:
 	var index: int = 1
@@ -74,8 +73,8 @@ func update_children() -> void:
 	while body_directions.size() > body_parts.size() + 1:
 		body_directions.pop_back()
 
-func attach_new_body(body_position: Vector2) -> void:
-	var body_part: CharacterBody2D = body_scene.instantiate()
+func attach__body(body_position: Vector2) -> void:
+	var body_part: CharacterBody2D = snake_body_scene.instantiate()
 	body_part.position = body_position
 	body_part.rotation = rotation
 	body_part.set_collision_layer_value(6, false)
@@ -89,9 +88,9 @@ func food_consumed() -> void:
 func reset_head():
 	died = true
 	suppress_until_release = true
-	position = game_manager.get_reset_position()
+	position = GameManager.get_reset_position()
 	current_direction = Vector2.ZERO
-	rotation = game_manager.get_reset_direction().angle()
+	rotation = GameManager.get_reset_direction().angle()
 	target = position
 	body_directions = []
 	for body in body_parts:
@@ -117,16 +116,16 @@ func check_collisions():
 		var collider_name: String = collision.get_collider().name.to_lower()
 		if collider_name.contains("levelmanager") or collider_name.contains("snakebody"):
 			reset_head()
-			game_manager.reset_level()
+			GameManager.reset_level()
 			return
 		if collider_name.contains("food") or collider_name.contains("rat"):
 			has_pending_food = true
-			game_manager.food_consumed(collision.get_collider())
+			GameManager.food_consumed(collision.get_collider())
 
-func level_cleared(new_reset_position: Vector2, new_reset_direction: Vector2) -> void:
-	rotation = new_reset_direction.angle()
-	reset_position = new_reset_position
-	target = target + new_reset_direction * CELL_SIZE
+func level_cleared(_reset_position: Vector2, _reset_direction: Vector2) -> void:
+	rotation = _reset_direction.angle()
+	reset_position = _reset_position
+	target = target + _reset_direction * CELL_SIZE
 
 func _on_ready() -> void:
 	target = position

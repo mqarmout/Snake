@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://bj7nn6pk4hjig"]
+
+[ext_resource type="Script" uid="uid://bufqi1sfn8by1" path="res://scripts/start_game_button.gd" id="1_thu50"]
+[ext_resource type="Script" uid="uid://c7o858y01qm83" path="res://scripts/end_game_button.gd" id="2_m7x51"]
+
+[node name="StartMenu" type="MarginContainer" unique_id=1428592846]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1773148181]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=803570209]
+layout_mode = 2
+
+[node name="StartGameButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1600071075]
+layout_mode = 2
+text = "Start"
+script = ExtResource("1_thu50")
+
+[node name="SettingsButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=2047775321]
+layout_mode = 2
+text = "Settings"
+
+[node name="ExitGameButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=2080200131]
+layout_mode = 2
+text = "Exit"
+script = ExtResource("2_m7x51")
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/StartGameButton" to="CenterContainer/VBoxContainer/StartGameButton" method="_on_pressed"]

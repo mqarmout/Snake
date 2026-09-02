@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dbjbto58jej5b"]
 
-[ext_resource type="Texture2D" uid="uid://0hy725j3duri" path="res://icon.svg" id="1_c4vl1"]
-[ext_resource type="Script" uid="uid://g4c4jv616tc5" path="res://scripts/Exit.gd" id="1_c8tsr"]
+[ext_resource type="Script" uid="uid://g4c4jv616tc5" path="res://scripts/exit.gd" id="1_uyw7u"]
+[ext_resource type="Texture2D" uid="uid://0hy725j3duri" path="res://icon.svg" id="2_l5n14"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_c8tsr"]
 radius = 61.522354
@@ -10,11 +10,11 @@ radius = 61.522354
 scale = Vector2(0.062, 0.062)
 collision_layer = 4
 collision_mask = 16
-script = ExtResource("1_c8tsr")
+script = ExtResource("1_uyw7u")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=706522412]
 modulate = Color(0.05490196, 0.69803923, 0.8666667, 1)
-texture = ExtResource("1_c4vl1")
+texture = ExtResource("2_l5n14")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=3927361]
 shape = SubResource("CircleShape2D_c8tsr")

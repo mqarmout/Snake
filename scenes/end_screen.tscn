@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://byj2vhdf22tqt"]
+
+[ext_resource type="Script" uid="uid://c7o858y01qm83" path="res://scripts/end_game_button.gd" id="2_6e1uj"]
+
+[node name="EndScreen" type="MarginContainer" unique_id=20039208]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="CenterContainer" parent="." unique_id=1701328118]
+layout_mode = 2
+
+[node name="EndGameButton" type="Button" parent="VBoxContainer" unique_id=1738361839]
+layout_mode = 2
+text = "End Game"
+script = ExtResource("2_6e1uj")
+
+[connection signal="pressed" from="VBoxContainer/EndGameButton" to="VBoxContainer/EndGameButton" method="_on_pressed"]

@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="Snake"
-run/main_scene="res://scenes/Main.tscn"
+run/main_scene="uid://bj7nn6pk4hjig"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GameManager="*uid://b06j80ncbnmo0"
 
 [editor]
 
