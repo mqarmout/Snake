@@ -118,9 +118,16 @@ func check_collisions():
 			reset_head()
 			GameManager.reset_level()
 			return
-		if collider_name.contains("food") or collider_name.contains("rat"):
+		if collider_name.contains("food"):
 			has_pending_food = true
 			GameManager.food_consumed(collision.get_collider())
+		if collider_name.contains("rat"):
+			if collision.get_collider().health <= body_parts.size() + 1:
+				has_pending_food = true
+				GameManager.food_consumed(collision.get_collider())
+			else:
+				reset_head()
+				GameManager.reset_level()
 
 func level_cleared(_reset_position: Vector2, _reset_direction: Vector2) -> void:
 	rotation = _reset_direction.angle()

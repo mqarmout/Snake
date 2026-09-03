@@ -264,12 +264,19 @@ rotation = 1.5707964
 position = Vector2(0, 144)
 
 [node name="PressurePlate" parent="Level11" unique_id=2003820862 node_paths=PackedStringArray("connected_exit") instance=ExtResource("5_kfnik")]
-position = Vector2(4, -20)
+position = Vector2(4, 20)
 connected_exit = NodePath("../Exit")
 
 [node name="Exit" parent="Level11" unique_id=252440641 instance=ExtResource("3_lbe5n")]
-position = Vector2(4, -12)
+position = Vector2(4, 28)
 reset_direction = Vector2(0, 1)
 
 [node name="Food" parent="Level11" unique_id=1673109118 instance=ExtResource("4_2yrkd")]
-position = Vector2(4, -20)
+position = Vector2(-4, -28)
+
+[node name="Rat" parent="Level11" unique_id=100389534 instance=ExtResource("6_dpnu2")]
+position = Vector2(-4, -12)
+
+[node name="Rat2" parent="Level11" unique_id=1100577636 instance=ExtResource("6_dpnu2")]
+position = Vector2(4, -12)
+health = 2

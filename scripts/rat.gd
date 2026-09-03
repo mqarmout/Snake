@@ -1,8 +1,11 @@
 extends CharacterBody2D
 
+@export var health := 1
+
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.name.to_lower().contains("snake"):
 		body.reset_head()
+		GameManager.reset_level()
 
 func interact() -> void:
 	visible = false

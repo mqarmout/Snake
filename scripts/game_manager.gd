@@ -12,7 +12,7 @@ const STAGE_1 := "res://scenes/stage_1.tscn"
 
 const SNAKE_BODY = preload("res://scenes/snake_body.tscn")
 
-var current_level := 1
+var current_level := 11
 var current_stage := 1
 
 var reset_position: Vector2
