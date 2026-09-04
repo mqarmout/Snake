@@ -13,6 +13,7 @@ script = ExtResource("1_77a1s")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1540057770]
 modulate = Color(0.8627451, 0, 0, 1)
+rotation = 1.5707964
 scale = Vector2(0.05, 0.05)
 texture = ExtResource("1_1l88y")
 
@@ -26,7 +27,9 @@ collision_layer = 8
 collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=193629659]
+position = Vector2(7.9999995, 7.9999995)
 scale = Vector2(0.8, 0.8)
 shape = SubResource("CircleShape2D_6buih")
 
+[connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

@@ -47,18 +47,20 @@ func take_step(delta: float) -> void:
 			has_pending_food = false
 		else:
 			update_children()
-	elif target == position and !can_make_move:
+	elif target == position and not can_make_move:
 		can_make_move = true
-	if !can_make_move:
+	if not can_make_move:
 		died = false
 	position = position.move_toward(target, delta * SPEED)
 
 func determine_direction(_input: Vector2) -> Vector2:
 	var direction = body_directions.front() if body_directions.size() > 0 else GameManager.get_reset_direction()
+	if not can_make_move:
+		return direction
 	if _input == direction * -1 or _input == Vector2.ZERO:
 		return Vector2.ZERO
 	if _input.abs() == Vector2.ONE:
-		return (direction.abs() - _input.abs()) * _input
+		return (_input.abs() - direction.abs()) * _input
 	return _input
 
 func update_children() -> void:
@@ -107,7 +109,7 @@ func drop_body() -> void:
 	has_pending_food = false
 
 func _on_area_2d_area_exited(area: Area2D) -> void:
-	if area.name.to_lower().contains("exit") and !died:
+	if area.name.to_lower().contains("exit") and not died:
 		drop_body()
 
 func check_collisions():
