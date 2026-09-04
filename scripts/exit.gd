@@ -1,6 +1,13 @@
 extends Area2D
+enum Directions {UP, RIGHT, DOWN, LEFT}
 
-@export var reset_direction: Vector2
+const DIRECTIONS_VECTORS := {
+	Directions.UP : Vector2.UP,
+	Directions.RIGHT : Vector2.RIGHT,
+	Directions.DOWN : Vector2.DOWN,
+	Directions.LEFT : Vector2.LEFT}
+
+@export var reset_direction: Directions
 const SIZE := 8
 
 var flags := {
@@ -10,7 +17,10 @@ var flags := {
 }
 
 func get_reset_position() -> Vector2:
-	return global_position + SIZE * reset_direction
+	return global_position + SIZE * DIRECTIONS_VECTORS[reset_direction]
+
+func get_reset_direction() -> Vector2:
+	return DIRECTIONS_VECTORS[reset_direction]
 
 func interact() -> void:
 	pass
@@ -26,7 +36,7 @@ func _on_body_entered(body: Node2D) -> void:
 		GameManager.reset_level()
 		return
 	if not flags["visited"]:
-		GameManager.level_cleared(get_reset_position(), reset_direction)
+		GameManager.level_cleared(get_reset_position(), DIRECTIONS_VECTORS[reset_direction])
 		modulate = Color(1.0, 0.0, 0.0, 1.0)
 		flags["visited"] = true
 

@@ -15,7 +15,7 @@ func get_reset_position(level: int) -> Vector2:
 
 func get_reset_direction(level: int) -> Vector2:
 	if level == 1: return Vector2.RIGHT
-	return get_node("Level%d" % (level - 1)).get_node("Exit").reset_direction
+	return get_node("Level%d" % (level - 1)).get_node("Exit").get_reset_direction()
 
 func get_level_scale(level: int) -> int:
 	return level_scales[level - 1]
