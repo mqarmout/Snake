@@ -37,6 +37,9 @@ func _on_ready() -> void:
 func _process(_delta: float) -> void:
 	pass
 
+func update_level_entities() -> void:
+	level_manager.update_entities(current_level)
+
 func register_scenes(_snake_head: CharacterBody2D, _level_manager: TileMapLayer, _camera: Camera2D) -> void:
 	snake_head = _snake_head
 	level_manager = _level_manager

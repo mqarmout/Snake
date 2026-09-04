@@ -22,6 +22,9 @@ func get_reset_position() -> Vector2:
 func get_reset_direction() -> Vector2:
 	return DIRECTIONS_VECTORS[reset_direction]
 
+func update_entity() -> void:
+	pass
+
 func interact() -> void:
 	pass
 

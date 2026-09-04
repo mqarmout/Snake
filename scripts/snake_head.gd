@@ -7,6 +7,7 @@ const CELL_SIZE := 8
 
 var body_directions: Array[Vector2] = []
 var body_parts: Array[CharacterBody2D] = []
+var detached_body_parts: Array[CharacterBody2D] = []
 
 var current_direction := Vector2.ZERO
 var died: bool = false
@@ -25,7 +26,7 @@ func _physics_process(delta):
 	move_and_slide()
 	check_collisions()
 
-func read_input():
+func read_input() -> void:
 	var _input = Input.get_vector("left", "right", "up", "down").round()
 	if _input == Vector2.ZERO:
 		suppress_until_release = false
@@ -43,12 +44,13 @@ func take_step(delta: float) -> void:
 		current_direction = Vector2.ZERO
 		can_make_move = false
 		if has_pending_food:
-			attach__body(target - body_directions.front() * CELL_SIZE)
+			attach_body(target - body_directions.front() * CELL_SIZE)
 			has_pending_food = false
 		else:
 			update_children()
 	elif target == position and not can_make_move:
 		can_make_move = true
+		GameManager.update_level_entities()
 	if not can_make_move:
 		died = false
 	position = position.move_toward(target, delta * SPEED)
@@ -75,19 +77,40 @@ func update_children() -> void:
 	while body_directions.size() > body_parts.size() + 1:
 		body_directions.pop_back()
 
-func attach__body(body_position: Vector2) -> void:
+func attach_body(body_position: Vector2) -> void:
 	var body_part: CharacterBody2D = snake_body_scene.instantiate()
 	body_part.position = body_position
 	body_part.rotation = rotation
+	body_part.snake_head = self
 	body_part.set_collision_layer_value(6, false)
 	if body_parts.size() == 0: body_part.modulate = Color(0.0, 0.0, 0.0, 1.0)
 	body_parts.push_front(body_part)
 	add_sibling.call_deferred(body_part)
 
+func detatch_body(attacked_body: CharacterBody2D) -> void:
+	var index := 0
+	var slice := false
+	for body in body_parts:
+		if body == attacked_body:
+			slice = true
+			detached_body_parts = body_parts.slice(index, body_parts.size())
+			body_parts = body_parts.slice(0, index)
+			while body_directions.size() > body_parts.size() + 1:
+				body_directions.pop_back()
+		if slice:
+			body.set_physics_process(false)
+			body.set_collision_layer_value(6, false)
+			body.set_collision_layer_value(5, false)
+		index += 1
+
 func food_consumed() -> void:
 	pass
 
-func reset_head():
+func take_damage() -> void:
+	reset_head()
+	GameManager.reset_level()
+
+func reset_head() -> void:
 	died = true
 	suppress_until_release = true
 	position = GameManager.get_reset_position()
@@ -97,6 +120,9 @@ func reset_head():
 	body_directions = []
 	for body in body_parts:
 		body.free()
+	for body in detached_body_parts:
+		body.free()
+	detached_body_parts.clear()
 	body_parts.clear()
 	has_pending_food = false
 
@@ -112,7 +138,7 @@ func _on_area_2d_area_exited(area: Area2D) -> void:
 	if area.name.to_lower().contains("exit") and not died:
 		drop_body()
 
-func check_collisions():
+func check_collisions() -> void:
 	for i in get_slide_collision_count():
 		var collision := get_slide_collision(i)
 		var collider_name: String = collision.get_collider().name.to_lower()
@@ -135,6 +161,7 @@ func level_cleared(_reset_position: Vector2, _reset_direction: Vector2) -> void:
 	rotation = _reset_direction.angle()
 	reset_position = _reset_position
 	target = target + _reset_direction * CELL_SIZE
+	detached_body_parts.clear()
 
 func _on_ready() -> void:
 	target = position

@@ -15,10 +15,24 @@ const DIRECTIONS_VECTORS := {
 @export var attack_type: AttackType = AttackType.NONE
 @export var rat_defense_type: DefenseType = DefenseType.NONE
 
+var head_detected := false
+var attack := false
+var detected_objects : Array[CharacterBody2D]
+
+func update_entity() -> void:
+	if (attack && not attack_type == AttackType.NONE) and detected_objects.size() > 0:
+		detected_objects.front().take_damage()
+	attack = false
+	if head_detected:
+		head_detected = false
+		attack = true
+
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body.name.to_lower().contains("snake"):
-		body.reset_head()
-		GameManager.reset_level()
+	head_detected = true
+	detected_objects.append(body)
+
+func _on_area_2d_body_exited(body: Node2D) -> void:
+	detected_objects.pop_front()
 
 func interact() -> void:
 	visible = false

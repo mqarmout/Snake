@@ -2,8 +2,9 @@ extends TileMapLayer
 
 @export var level_scales: Array[int]
 
-func get_level_center(level: int) -> Vector2:
-	return get_node("Level%d" % level).position
+func update_entities(level: int) -> void:
+	for interactable in get_node("Level%d" % level).get_children():
+		interactable.update_entity()
 
 func reset_interactables(level: int) -> void:
 	for interactable in get_node("Level%d" % level).get_children():
@@ -19,6 +20,9 @@ func get_reset_direction(level: int) -> Vector2:
 
 func get_level_scale(level: int) -> int:
 	return level_scales[level - 1]
+
+func get_level_center(level: int) -> Vector2:
+	return get_node("Level%d" % level).position
 
 func has_next_level(level: int) -> bool:
 	return get_node_or_null("Level%d" % (level)) != null
