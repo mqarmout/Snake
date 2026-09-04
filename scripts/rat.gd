@@ -2,9 +2,16 @@ extends CharacterBody2D
 
 enum AttackType {NONE, SPEAR, GLAVE, BOW}
 enum DefenseType {NONE, FRONT, REAR}
+enum Directions {UP, RIGHT, DOWN, LEFT}
+
+const DIRECTIONS_VECTORS := {
+	Directions.UP : Vector2.UP,
+	Directions.RIGHT : Vector2.RIGHT,
+	Directions.DOWN : Vector2.DOWN,
+	Directions.LEFT : Vector2.LEFT}
 
 @export var health := 1
-@export var direction: Vector2
+@export var direction: Directions
 @export var attack_type: AttackType = AttackType.NONE
 @export var rat_defense_type: DefenseType = DefenseType.NONE
 
@@ -27,6 +34,6 @@ func reset_node() -> void:
 		$Area2D/CollisionShape2D.set_deferred("disabled", false)
 
 func _on_ready() -> void:
-	rotation = direction.angle()
+	rotation = DIRECTIONS_VECTORS[direction].angle()
 	if attack_type == AttackType.NONE:
 		$Area2D/CollisionShape2D.set_deferred("disabled", true)
