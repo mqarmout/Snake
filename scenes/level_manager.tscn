@@ -306,11 +306,11 @@ attack_type = 1
 position = Vector2(62, 224)
 
 [node name="PressurePlate" parent="Level13" unique_id=979957113 node_paths=PackedStringArray("connected_exit") instance=ExtResource("5_kfnik")]
-position = Vector2(28, -12)
+position = Vector2(30, -12)
 connected_exit = NodePath("../Exit")
 
 [node name="Exit" parent="Level13" unique_id=746517554 instance=ExtResource("3_lbe5n")]
-position = Vector2(36, -12)
+position = Vector2(38, -12)
 
 [node name="Level14" type="Node2D" parent="." unique_id=1226298967]
 position = Vector2(0, 144)

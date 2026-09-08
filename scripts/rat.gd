@@ -14,6 +14,7 @@ const DIRECTIONS_VECTORS := {
 @export var direction: Directions
 @export var attack_type: AttackType = AttackType.NONE
 @export var rat_defense_type: DefenseType = DefenseType.NONE
+@export var delays_attack: bool = false
 
 var head_detected := false
 var attack := false
@@ -25,13 +26,16 @@ func update_entity() -> void:
 	attack = false
 	if head_detected:
 		head_detected = false
-		attack = true
+		if delays_attack:
+			attack = true
+		else:
+			detected_objects.front().take_damage()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	head_detected = true
 	detected_objects.append(body)
 
-func _on_area_2d_body_exited(body: Node2D) -> void:
+func _on_area_2d_body_exited(_body: Node2D) -> void:
 	detected_objects.pop_front()
 
 func interact() -> void:
