@@ -23,13 +23,15 @@ func get_reset_direction() -> Vector2:
 	return DIRECTIONS_VECTORS[reset_direction]
 
 func update_entity() -> void:
-	pass
+	if flags["open"] or flags["perma_open"]:
+		modulate = Color.WHITE
+	else: modulate = Color.DARK_RED
 
 func interact() -> void:
 	pass
 
 func reset_node() -> void:
-	modulate = Color.html("#0eb2dd")
+	update_entity()
 
 func _on_body_entered(body: Node2D) -> void:
 	if not body.name.to_lower().contains("snake"):
@@ -40,7 +42,7 @@ func _on_body_entered(body: Node2D) -> void:
 		return
 	if not flags["visited"]:
 		GameManager.level_cleared(get_reset_position(), DIRECTIONS_VECTORS[reset_direction])
-		modulate = Color(1.0, 0.0, 0.0, 1.0)
+		modulate = Color.WHITE
 		flags["visited"] = true
 
 func _on_ready() -> void:
