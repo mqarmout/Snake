@@ -7,7 +7,7 @@ var snake_head: CharacterBody2D
 
 func take_damage() -> void:
 	if not snake_head == null:
-		snake_head.detatch_body(self)
+		snake_head.detach_body(self)
 
 func move(_delta: float):
 	position = position.move_toward(target, _delta * speed)

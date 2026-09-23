@@ -264,7 +264,7 @@ attack_type = 1
 position = Vector2(0, 144)
 
 [node name="PressurePlate" parent="Level11" unique_id=2003820862 node_paths=PackedStringArray("connected_exit") instance=ExtResource("5_kfnik")]
-position = Vector2(28, -12)
+position = Vector2(4, -12)
 connected_exit = NodePath("../Exit")
 
 [node name="Exit" parent="Level11" unique_id=252440641 instance=ExtResource("3_lbe5n")]
@@ -275,6 +275,10 @@ reset_direction = 1
 position = Vector2(-4, -12)
 direction = 1
 attack_type = 1
+delays_attack = true
+
+[node name="Food3" parent="Level11" unique_id=902232141 instance=ExtResource("4_2yrkd")]
+position = Vector2(4, -20)
 
 [node name="Level12" type="Node2D" parent="." unique_id=1877247347]
 position = Vector2(72, 144)

@@ -6,7 +6,7 @@ func update_entities(level: int) -> void:
 	for interactable in get_node("Level%d" % level).get_children():
 		interactable.update_entity()
 
-func reset_interactables(level: int) -> void:
+func reset_entities(level: int) -> void:
 	for interactable in get_node("Level%d" % level).get_children():
 		interactable.reset_node()
 

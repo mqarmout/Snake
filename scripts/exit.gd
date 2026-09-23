@@ -13,7 +13,8 @@ const SIZE := 8
 var flags := {
 	"visited": false,
 	"open": false,
-	"perma_open": false
+	"perma_open": false,
+	"perma_close": false
 }
 
 func get_reset_position() -> Vector2:
@@ -23,7 +24,7 @@ func get_reset_direction() -> Vector2:
 	return DIRECTIONS_VECTORS[reset_direction]
 
 func update_entity() -> void:
-	if flags["open"] or flags["perma_open"]:
+	if (flags["open"] or flags["perma_open"]) and not flags["visited"]:
 		modulate = Color.WHITE
 	else: modulate = Color.DARK_RED
 
@@ -31,20 +32,20 @@ func interact() -> void:
 	pass
 
 func reset_node() -> void:
-	update_entity()
+	pass
 
 func _on_body_entered(body: Node2D) -> void:
 	if not body.name.to_lower().contains("snake"):
 		return
-	if not flags["open"]:
+	if not flags["open"] or flags["visited"]:
 		body.reset_head()
 		GameManager.reset_level()
 		return
 	if not flags["visited"]:
-		GameManager.level_cleared(get_reset_position(), DIRECTIONS_VECTORS[reset_direction])
-		modulate = Color.WHITE
 		flags["visited"] = true
+		GameManager.level_cleared(get_reset_position(), DIRECTIONS_VECTORS[reset_direction])
 
 func _on_ready() -> void:
 	if get_parent().name.to_lower() == "level1":
 		flags["open"] = true
+	update_entity()

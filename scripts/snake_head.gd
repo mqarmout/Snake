@@ -87,7 +87,7 @@ func attach_body(body_position: Vector2) -> void:
 	body_parts.push_front(body_part)
 	add_sibling.call_deferred(body_part)
 
-func detatch_body(attacked_body: CharacterBody2D) -> void:
+func detach_body(attacked_body: CharacterBody2D) -> void:
 	var index := 0
 	var slice := false
 	for body in body_parts:
@@ -100,7 +100,7 @@ func detatch_body(attacked_body: CharacterBody2D) -> void:
 		if slice:
 			body.set_physics_process(false)
 			body.set_collision_layer_value(6, false)
-			body.set_collision_layer_value(5, false)
+			#body.set_collision_layer_value(5, false)
 		index += 1
 
 func food_consumed() -> void:
@@ -161,6 +161,9 @@ func level_cleared(_reset_position: Vector2, _reset_direction: Vector2) -> void:
 	rotation = _reset_direction.angle()
 	reset_position = _reset_position
 	target = target + _reset_direction * CELL_SIZE
+	for body_part in detached_body_parts:
+		body_part.set_collision_layer_value(5, false)
+		body_part.set_collision_layer_value(6, false)
 	detached_body_parts.clear()
 
 func _on_ready() -> void:

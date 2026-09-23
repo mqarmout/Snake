@@ -12,7 +12,7 @@ const STAGE_1 := "res://scenes/stage_1.tscn"
 
 const SNAKE_BODY = preload("res://scenes/snake_body.tscn")
 
-var current_level := 12
+var current_level := 11
 var current_stage := 1
 
 var reset_position: Vector2
@@ -52,7 +52,7 @@ func get_reset_direction() -> Vector2:
 	return level_manager.get_reset_direction(current_level)
 
 func reset_level() -> void:
-	level_manager.reset_interactables(current_level)
+	level_manager.reset_entities(current_level)
 
 func level_cleared(_reset_position: Vector2, _reset_direction: Vector2) -> void:
 	if not level_manager.has_next_level(current_level + 1):
@@ -65,6 +65,7 @@ func level_cleared(_reset_position: Vector2, _reset_direction: Vector2) -> void:
 	camera.move_camera(current_level_center)
 	camera.zoom_camera(level_manager.get_level_scale(current_level))
 	snake_head.level_cleared(_reset_position, _reset_direction)
+	level_manager.update_entities(current_level - 1)
 	#save_game()
 
 func food_consumed(_object: CharacterBody2D) -> void:
