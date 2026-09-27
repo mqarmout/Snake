@@ -46,6 +46,6 @@ func _on_body_entered(body: Node2D) -> void:
 		GameManager.level_cleared(get_reset_position(), DIRECTIONS_VECTORS[reset_direction])
 
 func _on_ready() -> void:
-	if get_parent().name.to_lower() == "level1":
+	if get_parent().get_parent().name.to_lower() == "level1":
 		flags["open"] = true
 	update_entity()

@@ -12,7 +12,7 @@ const STAGE_1 := "res://scenes/stage_1.tscn"
 
 const SNAKE_BODY = preload("res://scenes/snake_body.tscn")
 
-var current_level := 11
+var current_level := 1
 var current_stage := 1
 
 var reset_position: Vector2
@@ -23,7 +23,8 @@ func _on_ready() -> void:
 	if level_manager == null or snake_head == null or camera == null:
 		print("snake head: %s\nlevel manager: %s\ncamera: %s" % [snake_head, level_manager, camera])
 		return
-	
+	level_manager.hide_all_levels()
+	level_manager.show_level(current_level)
 	var current_level_center: Vector2 = level_manager.get_level_center(current_level)
 	camera.move_camera(current_level_center)
 	camera.zoom_camera(level_manager.get_level_scale(current_level))
@@ -55,7 +56,7 @@ func reset_level() -> void:
 	level_manager.reset_entities(current_level)
 
 func level_cleared(_reset_position: Vector2, _reset_direction: Vector2) -> void:
-	if not level_manager.has_next_level(current_level + 1):
+	if not level_manager.has_level(current_level + 1):
 		get_tree().change_scene_to_file.call_deferred(END_SCREEN)
 		return
 	current_level += 1
@@ -66,6 +67,8 @@ func level_cleared(_reset_position: Vector2, _reset_direction: Vector2) -> void:
 	camera.zoom_camera(level_manager.get_level_scale(current_level))
 	snake_head.level_cleared(_reset_position, _reset_direction)
 	level_manager.update_entities(current_level - 1)
+	level_manager.show_level(current_level)
+	level_manager.hide_level(current_level - 1)
 	#save_game()
 
 func food_consumed(_object: CharacterBody2D) -> void:
